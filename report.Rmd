@@ -20,13 +20,31 @@ movie14 <- filter(movielens, year == 2014, grepl('Sci-Fi', genres))
 movie15 <- filter(movielens, year == 2015, grepl('Sci-Fi', genres))
 ```
 
+
+Research Question:
+
+**Were rates of Hepatitis A of U.S. greater in the 20th or 21st century?**
+
+
+Size: 
+
+Power:
+
+
+
+
+
+
+
+
+
+
+
 # Executive Summary
 
 # Motivation
 
-# Analysis
-
-# Discussion
+# 
 
 # Conclusion
 
