@@ -58,8 +58,8 @@ efSize = -3.5e-04
 mean0 = 4e-04
 sd0 = 
 
-MC.simulate <- function(spSise = 100, efSize, mean0, sd0, sd1, seed = 4113) {
-  cent20 <- data.frame(century = 20, rate = rnorm(spSise))
+MC.simulate <- function(spSize = 100, efSize, mean0, sd0, sd1, seed = 4113) {
+  cent20 <- data.frame(century = 20, rate = rnorm(spSize))
 }
 
 

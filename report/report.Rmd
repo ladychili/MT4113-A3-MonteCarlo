@@ -1,0 +1,68 @@
+---
+title: "MT4113 - Report"
+author: '180024570'
+date: "07/11/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(dslabs)
+library(dplyr)
+```
+
+*I conﬁrm that the following report and associated code is my own work, except where clearly indicated.*
+
+
+## Task 1: 
+
+Research Question:
+
+**Were approval rates of Brexit greater in England or rest of the UK?**
+
+
+Statistical Tests:
+
+- Parametric: Paired t-test
+
+- Non-parametric: 
+
+
+## Task 2:
+
+### True data
+
+
+| century|    n|         mean|  variance|
+|-------:|----:|------------:|---------:|
+|      20| 2152| 0.0003753168| 5.344e-07|
+|      21|  557| 0.0000454146| 5.800e-09|
+
+sample size = 500
+
+| century|   n|         mean|  variance|
+|-------:|---:|------------:|---------:|
+|      20| 500| 0.0003903657| 5.398e-07|
+|      21| 500| 0.0000450217| 6.200e-09|
+
+### Scenorio 1 - larger sample size
+
+
+
+
+
+
+
+
+# Executive Summary
+
+# Motivation
+
+# 
+
+# Conclusion
+
+# Reference
+
+# Appendix
