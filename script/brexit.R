@@ -33,23 +33,54 @@ mean0 = 55
 sd0 = 10
 sd1 = 8
   
-MC.simulate <- function(spSize = 100, efSize, mean0, sd0, sd1, seed = 4113) {
+simulating <- function(seed, spSize, efSize, mean0, sd0, sd1) {
   set.seed(seed)
   Eng <- data.frame(Region = c('England'), brexitRate = rnorm(spSize, mean0, sd0))
   set.seed(seed)
-  nEng <- data.frame(Region = c('NonEngland'), brexitRate = rnorm(spSize, mean0 + efSize, sd1))
+  nEng <- data.frame(Region = c('NonEngland'), brexitRate = rnorm(spSize, mean0 - efSize, sd1))
   data <- rbind(Eng,nEng)
   return(data)
 }
 
-
-tmp <- MC.simulate(100,-5,mean0 = 60,sd0 = 10,sd1 = 7, seed = 4113)
+# simulating a dataset
+tmp <- simulating(seed = 4113, 100,5,mean0 = 60,sd0 = 10,sd1 = 7)
 tmpsum <- tmp %>% group_by(Region) %>% 
   summarise(n = n(),
             mean = mean(brexitRate),
             sd = sd(brexitRate))
 
 kableExtra::kable(tmpsum, format = 'markdown', digits = 2)
-diff(truesum$mean)
+
+Eng <- tmp$brexitRate[1:(nrow(tmp)/2)]
+nonEng <- tmp$brexitRate[-(1:(nrow(tmp)/2))]
+p.val <- t.test(Eng, nonEng,alternative = 'g')$p.value
+
+
+require(snow)
+# for each scenario, conduct tests 1000tms, calc power and size
+MonteCarlo <- function(n = 1000, spSize = 100, efSize, mean0, sd0, sd1, seed = 4113) {
+  
+  mycl <- makeSOCKcluster(rep('localhost',3))
+  set.seed(seed)
+  seedindex <- sample(1e4, size = n)
+  datasets <- parLapply(mycl, seedindex, simulating, spSize = spSize, efSize = efSize, mean0 = mean0, sd0 = sd0, sd1 = sd1)
+  p.vals <- vector()
+  
+  for (i in 1:n) {
+    x <- datasets[[i]]$brexitRate[1:spSize]
+    y <- datasets[[i]]$brexitRate[-(1:spSize)]
+    p.vals[i] <- t.test(x,y,alternative = 'g')$p.value
+  }
+  return(sum(p.vals<0.05)/n)
+  stopCluster(mycl)
+}
+
+MonteCarlo(1000, spSize = 50, efSize = 1, mean0 = 50, sd0 = 3, sd1 = 2, seed = 4)
+
+
+
+
+
+
 
 
