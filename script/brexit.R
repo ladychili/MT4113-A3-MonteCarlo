@@ -28,22 +28,24 @@ diff(truesum$mean)
 # MCfunc ------------------------------------------------------------------
 
 spSize = 100
-efSize = -10
+
+dat0 = c(55,3)
+dat1 = c(52,2)
 mean0 = 55
 sd0 = 10
 sd1 = 8
   
-simulating <- function(seed, spSize, efSize, mean0, sd0, sd1) {
+simulating <- function(seed, spSize, dat0, dat1) {
   set.seed(seed)
-  Eng <- data.frame(Region = c('England'), brexitRate = rnorm(spSize, mean0, sd0))
+  Eng <- data.frame(Region = c('England'), brexitRate = rnorm(spSize, dat0[1], dat0[2]))
   set.seed(seed)
-  nEng <- data.frame(Region = c('NonEngland'), brexitRate = rnorm(spSize, mean0 - efSize, sd1))
+  nEng <- data.frame(Region = c('NonEngland'), brexitRate = rnorm(spSize, dat1[1], dat1[2]))
   data <- rbind(Eng,nEng)
   return(data)
 }
 
 # simulating a dataset
-tmp <- simulating(seed = 4113, 100,5,mean0 = 60,sd0 = 10,sd1 = 7)
+tmp <- simulating(seed = 4113, 100, dat0 = c(60,4), dat1 = c(50,3))
 tmpsum <- tmp %>% group_by(Region) %>% 
   summarise(n = n(),
             mean = mean(brexitRate),
@@ -56,14 +58,14 @@ nonEng <- tmp$brexitRate[-(1:(nrow(tmp)/2))]
 p.val <- t.test(Eng, nonEng,alternative = 'g')$p.value
 
 
-require(snow)
+library(snow)
 # for each scenario, conduct tests 1000tms, calc power and size
-MonteCarlo <- function(n = 1000, spSize = 100, efSize, mean0, sd0, sd1, seed = 4113) {
+MonteCarlo <- function(n = 1000, spSize = 100, dat0, dat1, seed = 4113) {
   
   mycl <- makeSOCKcluster(rep('localhost',3))
   set.seed(seed)
   seedindex <- sample(1e4, size = n)
-  datasets <- parLapply(mycl, seedindex, simulating, spSize = spSize, efSize = efSize, mean0 = mean0, sd0 = sd0, sd1 = sd1)
+  datasets <- parLapply(mycl, seedindex, simulating, spSize=spSize, dat0=dat0, dat1=dat1)
   p.vals <- vector()
   
   for (i in 1:n) {
@@ -75,7 +77,7 @@ MonteCarlo <- function(n = 1000, spSize = 100, efSize, mean0, sd0, sd1, seed = 4
   stopCluster(mycl)
 }
 
-MonteCarlo(1000, spSize = 50, efSize = 1, mean0 = 50, sd0 = 3, sd1 = 2, seed = 4)
+MonteCarlo(1000, spSize = 50, dat0 = c(50,3), dat1 = c(49,2), seed = 4113)
 
 
 
