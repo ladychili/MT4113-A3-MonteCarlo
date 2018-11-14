@@ -45,7 +45,7 @@ simulating <- function(seed, spSize, dat0, dat1) {
 }
 
 # simulating a dataset
-tmp <- simulating(seed = 4113, 100, dat0 = c(60,4), dat1 = c(50,3))
+tmp <- simulating(seed = 4113, 100, dat0 = c(50.4,3), dat1 = c(50,3))
 tmpsum <- tmp %>% group_by(Region) %>% 
   summarise(n = n(),
             mean = mean(brexitRate),
@@ -59,25 +59,35 @@ p.val <- t.test(Eng, nonEng,alternative = 'g')$p.value
 
 
 library(snow)
+library(foreach)
 # for each scenario, conduct tests 1000tms, calc power and size
-MonteCarlo <- function(n = 1000, spSize = 100, dat0, dat1, seed = 4113) {
+MonteCarlo <- function(n = 1000, spSize = 100, dat0, dat1, seed = 4113, param = TRUE) {
   
   mycl <- makeSOCKcluster(rep('localhost',3))
   set.seed(seed)
   seedindex <- sample(1e4, size = n)
   datasets <- parLapply(mycl, seedindex, simulating, spSize=spSize, dat0=dat0, dat1=dat1)
   p.vals <- vector()
-  
-  for (i in 1:n) {
-    x <- datasets[[i]]$brexitRate[1:spSize]
-    y <- datasets[[i]]$brexitRate[-(1:spSize)]
-    p.vals[i] <- t.test(x,y,alternative = 'g')$p.value
-  }
-  return(sum(p.vals<0.05)/n)
   stopCluster(mycl)
+  
+  if (param) {
+    for (i in 1:n) {
+      x <- datasets[[i]]$brexitRate[1:spSize]
+      y <- datasets[[i]]$brexitRate[-(1:spSize)]
+      p.vals[i] <- t.test(x,y,alternative = 'g')$p.value
+    }
+  } else {
+    for (i in 1:n) {
+      x <- datasets[[i]]$brexitRate[1:spSize]
+      y <- datasets[[i]]$brexitRate[-(1:spSize)]
+      p.vals[i] <- wilcox.test(x,y,alternative = 'g')$p.value
+    }
+  }
+
+  return(sum(p.vals<0.05)/n)
 }
 
-MonteCarlo(1000, spSize = 50, dat0 = c(50,3), dat1 = c(49,2), seed = 4113)
+MonteCarlo(1000, spSize = 50, dat0 = c(50,3), dat1 = c(49,2), seed = 4113, param = FALSE)
 
 
 
