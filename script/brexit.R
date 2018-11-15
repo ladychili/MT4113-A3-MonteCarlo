@@ -22,18 +22,11 @@ truesum <- brxData %>% group_by(Region) %>%
             sd = sd(brexitRate))
 
 kableExtra::kable(truesum, format = 'markdown', digits = 2)
-diff(truesum$mean)
+
 
 
 # MCfunc ------------------------------------------------------------------
 
-spSize = 100
-
-dat0 = c(55,3)
-dat1 = c(52,2)
-mean0 = 55
-sd0 = 10
-sd1 = 8
   
 simulating <- function(seed, spSize, dat0, dat1) {
   set.seed(seed)
@@ -59,12 +52,10 @@ p.val <- t.test(Eng, nonEng,alternative = 'g')$p.value
 
 
 library(snow)
-library(foreach)
-# for each scenario, conduct tests 1000tms, calc power and size
-MonteCarlo <- function(n = 1000, spSize = 100, dat0, dat1, seed = 4113, param = TRUE) {
+MonteCarlo <- function(n = 1000, spSize, dat0, dat1, param = TRUE, seed = NULL) {
   
   mycl <- makeSOCKcluster(rep('localhost',3))
-  set.seed(seed)
+  if (hasArg(seed)) set.seed(seed)
   seedindex <- sample(1e4, size = n)
   datasets <- parLapply(mycl, seedindex, simulating, spSize=spSize, dat0=dat0, dat1=dat1)
   p.vals <- vector()
@@ -83,16 +74,45 @@ MonteCarlo <- function(n = 1000, spSize = 100, dat0, dat1, seed = 4113, param = 
       p.vals[i] <- wilcox.test(x,y,alternative = 'g')$p.value
     }
   }
-
   return(sum(p.vals<0.05)/n)
 }
 
-MonteCarlo(1000, spSize = 50, dat0 = c(50,3), dat1 = c(49,2), seed = 4113, param = FALSE)
+
+
+# Power for 1, 3, 8 effect sizes -----------------------------------------
+MonteCarlo(1000, spSize = 10, dat0 = c(50,10), dat1 = c(49,8), seed = 4113)
+MonteCarlo(1000, spSize = 10, dat0 = c(53,10), dat1 = c(50,8), seed = 4113)
+MonteCarlo(1000, spSize = 10, dat0 = c(55,10), dat1 = c(50,8), seed = 4113)
+MonteCarlo(1000, spSize = 10, dat0 = c(58,10), dat1 = c(50,8), seed = 4113)
+
+MonteCarlo(1000, spSize = 50, dat0 = c(50,10), dat1 = c(49,8), seed = 4113)
+MonteCarlo(1000, spSize = 50, dat0 = c(53,10), dat1 = c(50,8), seed = 4113)
+MonteCarlo(1000, spSize = 50, dat0 = c(55,10), dat1 = c(50,8), seed = 4113)
+MonteCarlo(1000, spSize = 50, dat0 = c(58,10), dat1 = c(50,8), seed = 4113)
+
+MonteCarlo(1000, spSize = 100, dat0 = c(50,10), dat1 = c(49,8), seed = 4113)
+MonteCarlo(1000, spSize = 100, dat0 = c(53,10), dat1 = c(50,8), seed = 4113)
+MonteCarlo(1000, spSize = 100, dat0 = c(55,10), dat1 = c(50,8), seed = 4113)
+MonteCarlo(1000, spSize = 100, dat0 = c(58,10), dat1 = c(50,8), seed = 4113)
+
+MonteCarlo(1000, spSize = 400, dat0 = c(50,10), dat1 = c(49,8), seed = 4113)
+MonteCarlo(1000, spSize = 400, dat0 = c(53,10), dat1 = c(50,8), seed = 4113)
+MonteCarlo(1000, spSize = 500, dat0 = c(55,10), dat1 = c(50,8), seed = 4113)
+MonteCarlo(1000, spSize = 500, dat0 = c(58,10), dat1 = c(50,8), seed = 4113)
+
+
+
+MonteCarlo(1000, spSize = 1000, dat0 = c(50,10), dat1 = c(49,8), seed = 4113)
+MonteCarlo(1000, spSize = 1000, dat0 = c(53,10), dat1 = c(50,8), seed = 4113)
+MonteCarlo(1000, spSize = 1000, dat0 = c(55,10), dat1 = c(50,8), seed = 4113)
+MonteCarlo(1000, spSize = 1000, dat0 = c(58,10), dat1 = c(50,8), seed = 4113)
 
 
 
 
+# forloop-scenario --------------------------------------------------------
 
-
-
-
+for (i in c(1:10)) {
+  MonteCarlo(1000, spSize = 1000, dat0 = c(45+i,10), dat1 = c(45,8), seed = 4113)
+  
+}
