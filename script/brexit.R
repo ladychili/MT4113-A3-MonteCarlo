@@ -110,9 +110,16 @@ MonteCarlo(1000, spSize = 1000, dat0 = c(58,10), dat1 = c(50,8), seed = 4113)
 
 
 
-# forloop-scenario --------------------------------------------------------
 
-for (i in c(1:10)) {
-  MonteCarlo(1000, spSize = 1000, dat0 = c(45+i,10), dat1 = c(45,8), seed = 4113)
-  
+
+
+# forloop-scenario --------------------------------------------------------
+samplesize <- seq(10, 200, 20)
+effectsize <- seq(10)
+
+pwr <- matrix(NA, length(samplesize), length(effectsize))
+for (i in samplesize) {
+  for (j in effectsize) {
+    pwr[j,i] <- MonteCarlo(1000, spSize = i, dat0 = c(45+j,10), dat1 = c(45,8), seed = 4113)
+  }
 }
