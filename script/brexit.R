@@ -78,15 +78,33 @@ MonteCarlo <- function(n = 1000, spSize, dat0, dat1, param = TRUE, seed = NULL) 
 }
 
 
+MonteCarlo(1000, spSize = 700, dat0 = c(45+1,10), dat1 = c(45,8), seed = 4113)
 
+samplesize <- c(10, 50, 100, 150, 200, 300, 400, 500, 700, 1000)
 
-# forloop-scenario --------------------------------------------------------
-samplesize <- seq(10, 300, 30)
+# Power-table-parametric --------------------------------------------------
+
 effectsize <- seq(10)
+pwr <- matrix(NA, length(samplesize), length(effectsize), dimnames = list(c(samplesize),c(effectsize)))
 
-pwr <- matrix(NA, length(samplesize), length(effectsize))
 for (i in 1:length(samplesize)) {
   for (j in 1:length(effectsize)) {
     pwr[i,j] <- MonteCarlo(1000, spSize = samplesize[i], dat0 = c(45+effectsize[j],10), dat1 = c(45,8), seed = 4113)
   }
 }
+kableExtra::kable(pwr[c(1,8,10),c(1,5,10)],format = "markdown")
+
+# Power-table-NonParametric -----------------------------------------------
+
+pwrNonPar <- matrix(NA, length(samplesize), length(effectsize), dimnames = list(c(samplesize),c(effectsize)))
+
+for (i in 1:length(samplesize)) {
+  for (j in 1:length(effectsize)) {
+    pwr[i,j] <- MonteCarlo(1000, spSize = samplesize[i], dat0 = c(45+effectsize[j],10), dat1 = c(45,8), param = FALSE, seed = 4113)
+  }
+}
+
+
+# Size-table-parametric ---------------------------------------------------
+
+Siz
