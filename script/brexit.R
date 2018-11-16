@@ -79,47 +79,14 @@ MonteCarlo <- function(n = 1000, spSize, dat0, dat1, param = TRUE, seed = NULL) 
 
 
 
-# Power for 1, 3, 8 effect sizes -----------------------------------------
-MonteCarlo(1000, spSize = 10, dat0 = c(50,10), dat1 = c(49,8), seed = 4113)
-MonteCarlo(1000, spSize = 10, dat0 = c(53,10), dat1 = c(50,8), seed = 4113)
-MonteCarlo(1000, spSize = 10, dat0 = c(55,10), dat1 = c(50,8), seed = 4113)
-MonteCarlo(1000, spSize = 10, dat0 = c(58,10), dat1 = c(50,8), seed = 4113)
-
-MonteCarlo(1000, spSize = 50, dat0 = c(50,10), dat1 = c(49,8), seed = 4113)
-MonteCarlo(1000, spSize = 50, dat0 = c(53,10), dat1 = c(50,8), seed = 4113)
-MonteCarlo(1000, spSize = 50, dat0 = c(55,10), dat1 = c(50,8), seed = 4113)
-MonteCarlo(1000, spSize = 50, dat0 = c(58,10), dat1 = c(50,8), seed = 4113)
-
-MonteCarlo(1000, spSize = 100, dat0 = c(50,10), dat1 = c(49,8), seed = 4113)
-MonteCarlo(1000, spSize = 100, dat0 = c(53,10), dat1 = c(50,8), seed = 4113)
-MonteCarlo(1000, spSize = 100, dat0 = c(55,10), dat1 = c(50,8), seed = 4113)
-MonteCarlo(1000, spSize = 100, dat0 = c(58,10), dat1 = c(50,8), seed = 4113)
-
-MonteCarlo(1000, spSize = 400, dat0 = c(50,10), dat1 = c(49,8), seed = 4113)
-MonteCarlo(1000, spSize = 400, dat0 = c(53,10), dat1 = c(50,8), seed = 4113)
-MonteCarlo(1000, spSize = 500, dat0 = c(55,10), dat1 = c(50,8), seed = 4113)
-MonteCarlo(1000, spSize = 500, dat0 = c(58,10), dat1 = c(50,8), seed = 4113)
-
-
-
-MonteCarlo(1000, spSize = 1000, dat0 = c(50,10), dat1 = c(49,8), seed = 4113)
-MonteCarlo(1000, spSize = 1000, dat0 = c(53,10), dat1 = c(50,8), seed = 4113)
-MonteCarlo(1000, spSize = 1000, dat0 = c(55,10), dat1 = c(50,8), seed = 4113)
-MonteCarlo(1000, spSize = 1000, dat0 = c(58,10), dat1 = c(50,8), seed = 4113)
-
-
-
-
-
-
 
 # forloop-scenario --------------------------------------------------------
-samplesize <- seq(10, 200, 20)
+samplesize <- seq(10, 300, 30)
 effectsize <- seq(10)
 
 pwr <- matrix(NA, length(samplesize), length(effectsize))
-for (i in samplesize) {
-  for (j in effectsize) {
-    pwr[j,i] <- MonteCarlo(1000, spSize = i, dat0 = c(45+j,10), dat1 = c(45,8), seed = 4113)
+for (i in 1:length(samplesize)) {
+  for (j in 1:length(effectsize)) {
+    pwr[i,j] <- MonteCarlo(1000, spSize = samplesize[i], dat0 = c(45+effectsize[j],10), dat1 = c(45,8), seed = 4113)
   }
 }
