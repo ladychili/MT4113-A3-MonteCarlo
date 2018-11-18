@@ -21,7 +21,7 @@ brxData$Region[!(brxData$Region %in% c('Scotland','Wales','Northern Ireland'))] 
 brxData$Region[brxData$Region %in% c('Scotland','Wales','Northern Ireland')] <- 'NonEngland'
 
 hist(brxData$brexitRate,breaks = 20)
-ggplot(brxData, aes(brexitRate, fill = Region)) +
+p.hist <- ggplot(brxData, aes(brexitRate, fill = Region)) +
   geom_histogram(bins = 30, alpha = 0.7) + 
   geom_vline(xintercept=50,lwd = 1) +
   scale_x_continuous(breaks=seq(0,100,10))
