@@ -13,6 +13,7 @@ brxData <- brexit %>% select(Region, 'brexitRate' = `Percent Leave`)
 brxData$Region[!(brxData$Region %in% c('Scotland','Wales','Northern Ireland'))] <- 'England'
 brxData$Region[brxData$Region %in% c('Scotland','Wales','Northern Ireland')] <- 'NonEngland'
 
+# histogram of true data
 pdf("figure/datasetHist.pdf", width = 5.5, height = 2.5)
 ggplot(brxData, aes(brexitRate, fill = Region)) +
   geom_histogram(bins = 30, alpha = 0.7) + 
@@ -24,20 +25,20 @@ ggplot(brxData, aes(brexitRate, fill = Region)) +
   annotate("text", x = c(25,75), y = 50, label = c("bold(Remain)","bold(Leave)"), parse = TRUE)
 dev.off()
 
-# summary -----------------------------------------------------------------
-
+# summary
 truesum <- brxData %>% group_by(Region) %>% 
   summarise(n = n(),
             mean = mean(brexitRate),
             sd = sd(brexitRate))
+truesum
 
 
 # Power-tables ------------------------------------------------------------
 
 samplesize <- c(10, 50, 100, 150, 200, 300, 400, 500, 700, 1000)
-effectsize <- seq(10)
+effectsize <- seq(10) # mean difference between two groups
 
-# parametric
+# calc power of t test using 1000 simulated datasets
 
 pwr <- matrix(NA, length(samplesize), length(effectsize), dimnames = list(samplesize,effectsize))
 
@@ -49,7 +50,7 @@ for (i in 1:length(samplesize)) {
 }
 
 
-# Non-parametric
+# calc power of MannW test using 1000 simulated datasets
 
 pwrNonPar <- matrix(NA, length(samplesize), length(effectsize), dimnames = list(samplesize,effectsize))
 
@@ -64,9 +65,9 @@ for (i in 1:length(samplesize)) {
 
 # Size-tables -------------------------------------------------------------
 
-SDdiff <- rep(c(0,3,5,8,10),2)
+SDdiff <- rep(c(0,3,5,8,10),2) # Standard Deviation difference between two groups
 
-# parametric
+# calc size of t test using 1000 simulated datasets
 
 siz <- matrix(NA, length(samplesize), length(SDdiff), dimnames = list(samplesize, SDdiff))
 
@@ -82,7 +83,7 @@ for (i in 1:length(samplesize)) {
 }
 
 
-# Non-parametric
+# calc size of MannW test using 1000 simulated datasets
 
 sizNonPar <- matrix(NA, length(samplesize), length(SDdiff), dimnames = list(samplesize, SDdiff))
 
