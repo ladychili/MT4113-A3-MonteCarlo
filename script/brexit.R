@@ -1,4 +1,6 @@
 library(tidyverse)
+library(reshape2)
+library(viridis)
 
 brexit <- read_csv("data/referendum.csv")
 
@@ -24,7 +26,10 @@ hist(brxData$brexitRate,breaks = 20)
 p.hist <- ggplot(brxData, aes(brexitRate, fill = Region)) +
   geom_histogram(bins = 30, alpha = 0.7) + 
   geom_vline(xintercept=50,lwd = 1) +
-  scale_x_continuous(breaks=seq(0,100,10))
+  xlab("Percentage of Leave Votes") + xlim(c(0,100)) + 
+  ylab("Count of Regions") + 
+  ggtitle('Vote Outcome in England and Non-England Regions') +
+  annotate("text", x = c(25,75), y = 50, label = c("bold(Remain)","bold(Leave)"), parse = TRUE)
 
 # summ --------------------------------------------------------------------
 
@@ -96,7 +101,7 @@ MonteCarlo <- function(n = 1000, spSize, dat0, dat1, rndto = NULL, param = TRUE,
 }
 
 
-MonteCarlo(1000, spSize = 150, dat0 = c(50,10), dat1 = c(50,1), rndto = 1,seed = 4113)
+
 
 samplesize <- c(10, 50, 100, 150, 200, 300, 400, 500, 700, 1000)
 
@@ -162,3 +167,18 @@ for (i in 1:length(samplesize)) {
 }
 
 kableExtra::kable(sizNonPar[c(1,8,10),c(1,5,10)],format = "markdown")
+
+
+
+# power-plots -------------------------------------------------------------
+meltpwr <- melt(pwr,c("spSize","efSize"))
+meltpwr$efSize <- as.factor(meltpwr$efSize)
+meltpwr$spSize <- as.factor(meltpwr$spSize)
+
+ggplot(meltpwr, mapping = aes(spSize,value, color = efSize, group = efSize)) +
+  geom_line() +
+  geom_point(size =2) + 
+  scale_color_viridis(direction = -1,breaks = c(1,4,7,10), name = 'Effect Size') +
+  labs(x = 'Sample Size', y = 'Power', title = "Power of Student's t Test under Different Scenarios") +
+  theme(plot.title = element_text(hjust = 0.5))
+ 

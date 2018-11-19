@@ -139,10 +139,10 @@ are concerned in terms of our research objectives.
 \begin{figure}
 \centering
 \includegraphics{../figure/datasetHist.pdf}
-\caption{Leave Votes in England and Non-England Regions}
+\caption{Vote Outcome in England and Non-England Regions}
 \end{figure}
 
-According to the histogram of leave vote, it seems that England regions
+According to the histogram of leave votes, it seems that England regions
 tend to be more supportive of Brexit than other regions. Hence, The
 research question is proposed as that
 
@@ -154,17 +154,71 @@ research question is proposed as that
 \end{itemize}
 
 On the basis of our research question, regions are categorized as
-England or Non-England, thus, Student's T test and Mann-Whitney U test
-are chosen to be conduct to compare the difference of mean approval
-rates of Brexit. Moreover, 1000-iteration Monte Carlo simulations are
-carried out under a range of scenarios in order to investigate power and
-size of these tests.
+England or Non-England, thus, One-tail Student's T test and Mann-Whitney
+U test are chosen to be conducted to compare the difference of mean
+approval rates of Brexit. Moreover, 1000-iteration Monte Carlo
+simulations are carried out under a range of scenarios in order to
+investigate power and size of these tests.
 
 \hypertarget{methodology}{%
 \section{Methodology}\label{methodology}}
 
 \hypertarget{result-and-discussion}{%
 \section{Result and Discussion}\label{result-and-discussion}}
+
+The power of parametric and non-parametric tests, in terms of different
+sample sizes and effect sizes, are calculated based on 1000 simulated
+datasets, and the result are shown in two tables below.
+
+\begin{table}
+
+\caption{\label{tab:power-tables}Power of Student's T Test}
+\centering
+\begin{tabular}[t]{lrrrrrrrrrr}
+\toprule
+\multicolumn{ 1}{c}{\bfseries Sample Size} & \multicolumn{10}{c}{\bfseries Effect Size} \\
+\cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-11}
+  & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+\midrule
+10 & 0.000 & 0.001 & 0.009 & 0.051 & 0.144 & 0.32 & 0.543 & 0.743 & 0.883 & 0.953\\
+50 & 0.000 & 0.006 & 0.510 & 0.992 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
+100 & 0.000 & 0.323 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
+150 & 0.000 & 0.923 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
+200 & 0.001 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
+\addlinespace
+300 & 0.047 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
+400 & 0.296 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
+500 & 0.720 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
+700 & 0.995 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
+1000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}
+
+\caption{\label{tab:power-tables}Power of Mann-Whitney U Test}
+\centering
+\begin{tabular}[t]{lrrrrrrrrrr}
+\toprule
+\multicolumn{ 1}{c}{\bfseries Sample Size} & \multicolumn{10}{c}{\bfseries Effect Size} \\
+\cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-11}
+  & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+\midrule
+10 & 0.001 & 0.003 & 0.016 & 0.065 & 0.185 & 0.358 & 0.541 & 0.724 & 0.848 & 0.92\\
+50 & 0.000 & 0.031 & 0.565 & 0.982 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
+100 & 0.000 & 0.372 & 0.998 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
+150 & 0.003 & 0.892 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
+200 & 0.009 & 0.997 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
+\addlinespace
+300 & 0.072 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
+400 & 0.305 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
+500 & 0.634 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
+700 & 0.975 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
+1000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \begin{table}
 

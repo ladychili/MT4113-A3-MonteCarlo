@@ -66,18 +66,35 @@ On the basis of our research question, regions are categorized as England or Non
 
 # Result and Discussion
 
-```{r size-tables}
+The power of parametric and non-parametric tests, in terms of different sample sizes and effect sizes, are calculated based on 1000 simulated datasets, and the result are shown in two tables below.
+
+```{r power-tables}
 load("../data/3.RData")
 
+header <- c(group1 = 1, group2 = 10)
+names(header) <- c("Sample Size", "Effect Size")
+kable(pwr, caption = "Power of Student's T Test", booktabs=T) %>% 
+  add_header_above(header = header, bold = T)
+
+
+names(header) <- c("Sample Size", "Effect Size")
+kable(pwrNonPar, caption = "Power of Mann-Whitney U Test", booktabs=T) %>% 
+  add_header_above(header = header, bold = T)
+
+
+```
+
+
+```{r size-tables}
 header <- c(group1 = 1, group2 = 5, group3 = 5)
 names(header) <- c("Sample Size","SD Difference","SD Difference(record round to 0)")
 kable(siz, caption = "Size of Student's T Test", booktabs=T) %>% 
-  add_header_above(header = header, bold = TRUE)
+  add_header_above(header = header, bold = T)
 
-header <- c(group1 = 1, group2 = 5, group3 = 5)
+
 names(header) <- c("Sample Size","SD Difference","SD Difference(record round to 0)")
 kable(sizNonPar, caption = "Size of Mann-Whitney U Test", booktabs=T) %>% 
-  add_header_above(header = header, bold = TRUE)
+  add_header_above(header = header, bold = T)
 
 ```
 
