@@ -26,7 +26,7 @@ brxData <- brexit %>% select(Region, 'brexitRate' = `Percent Leave`)
 brxData$Region[!(brxData$Region %in% c('Scotland','Wales','Northern Ireland'))] <- 'England'
 brxData$Region[brxData$Region %in% c('Scotland','Wales','Northern Ireland')] <- 'NonEngland'
 
-pdf("figure/datasetHist.pdf", height = 4)
+pdf("figure/datasetHist.pdf", width = 5, height = 3)
 ggplot(brxData, aes(brexitRate, fill = Region)) +
   geom_histogram(bins = 30, alpha = 0.7) + 
   geom_vline(xintercept=50,lwd = 1) +
@@ -44,10 +44,13 @@ truesum <- brxData %>% group_by(Region) %>%
             mean = mean(brexitRate),
             sd = sd(brexitRate))
 
-# Power-table-parametric --------------------------------------------------
+
+# Power-tables ------------------------------------------------------------
 
 samplesize <- c(10, 50, 100, 150, 200, 300, 400, 500, 700, 1000)
 effectsize <- seq(10)
+
+# parametric
 
 pwr <- matrix(NA, length(samplesize), length(effectsize), dimnames = list(samplesize,effectsize))
 
@@ -59,7 +62,7 @@ for (i in 1:length(samplesize)) {
 }
 
 
-# Power-table-NonParametric -----------------------------------------------
+# Non-parametric
 
 pwrNonPar <- matrix(NA, length(samplesize), length(effectsize), dimnames = list(samplesize,effectsize))
 
@@ -71,9 +74,12 @@ for (i in 1:length(samplesize)) {
 }
 
 
-# Size-table-parametric ---------------------------------------------------
+
+# Size-tables -------------------------------------------------------------
 
 SDdiff <- rep(c(0,3,5,8,10),2)
+
+# parametric
 
 siz <- matrix(NA, length(samplesize), length(SDdiff), dimnames = list(samplesize, SDdiff))
 
@@ -89,7 +95,7 @@ for (i in 1:length(samplesize)) {
 }
 
 
-# Size-table-NonParametric ------------------------------------------------
+# Non-parametric
 
 sizNonPar <- matrix(NA, length(samplesize), length(SDdiff), dimnames = list(samplesize, SDdiff))
 
@@ -105,15 +111,33 @@ for (i in 1:length(samplesize)) {
 }
 
 
-# power-plots -------------------------------------------------------------
+# plots -------------------------------------------------------------
+
+# power-t
+
 meltpwr <- melt(pwr,c("spSize","efSize"))
-meltpwr$efSize <- as.factor(meltpwr$efSize)
 meltpwr$spSize <- as.factor(meltpwr$spSize)
 
+pdf("figure/power_t.pdf", width = 5, height = 3)
 ggplot(meltpwr, mapping = aes(spSize,value, color = efSize, group = efSize)) +
   geom_line() +
   geom_point(size =2) + 
   scale_color_viridis(direction = -1,breaks = c(1,4,7,10), name = 'Effect Size') +
-  labs(x = 'Sample Size', y = 'Power', title = "Power of Student's t Test under Different Scenarios") +
+  labs(x = 'Sample Size', y = 'Power', title = "Power of Student's t Test") +
   theme(plot.title = element_text(hjust = 0.5))
- 
+dev.off()
+
+# power-mw
+
+meltpwrNonPar <- melt(pwrNonPar,c("spSize","efSize"))
+meltpwrNonPar$spSize <- as.factor(meltpwrNonPar$spSize)
+
+pdf("figure/power_mw.pdf", width = 5, height = 3)
+ggplot(meltpwrNonPar, mapping = aes(spSize,value, color = efSize, group = efSize)) +
+  geom_line() +
+  geom_point(size =2) + 
+  scale_color_viridis(direction = -1,breaks = c(1,4,7,10), name = 'Effect Size') +
+  labs(x = 'Sample Size', y = 'Power', title = "Power of Mann-Whitney U Test") +
+  theme(plot.title = element_text(hjust = 0.5))
+dev.off()
+

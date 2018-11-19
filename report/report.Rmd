@@ -84,6 +84,14 @@ kable(pwrNonPar, caption = "Power of Mann-Whitney U Test", booktabs=T) %>%
 
 ```
 
+```{r power-plot-t, fig.cap="Power of Student's t Test under Different Scenarios"}
+include_graphics("../figure/power_t.pdf")
+```
+
+```{r power-plot-mw, fig.cap="Power of Mann-Whitney U Test Test under Different Scenarios"}
+include_graphics("../figure/power_mw.pdf")
+```
+
 
 ```{r size-tables}
 header <- c(group1 = 1, group2 = 5, group3 = 5)
