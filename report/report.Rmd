@@ -40,23 +40,25 @@ library(kableExtra)
 
 \newpage
 
-# Abstract
+\section*{\centering Abstract}
 
 More than 17 million people voted to leave the EU in 2016 Referendum in the UK. This statistical report investigated the difference of approval rates of Brexit in England and the rest of the UK by carrying out both parametric and non-parametric tests. Particularly, Monte Carlo simulation is conducted on the referendum dataset by regions, to research the properties of those statistical tests under a range of different scenarios. *add a bit summary of result*
 
-# Introduction
+\newpage
+# Motivation
 
-Hundreds of thousands of people marched to London's Parliament Square for a referendum on the final Brexit deal in late October[@BBCNews2018]. In the EU referendum in 2016, approximately 52%, or more than 17 million people in the UK, voted to leave the European Union [@Becker2017]. To investigate what voters in different nations of the UK vote for, the dataset of EU referendum results by regions[@ElectoralCommission2016] are statistically analysed and tested in this report.
+Hundreds of thousands of people marched to London's Parliament Square for a referendum on the final Brexit deal in late October[@BBCNews2018]. In the EU referendum in 2016, approximately 52%, or more than 17 million people in the UK, voted to leave the European Union [@Becker2017]. To investigate what voters in different nations of the UK vote for, the dataset of EU referendum results by regions[@ElectoralCommission2016] are statistically analysed and tested in this report. The dateset contains numerous variates regarding the referendum outcome, yet only *Region* and *Percent Leave* are concerned in terms of our research objectives.
 
-```{r}
-
+```{r hist, fig.cap="Vote Outcome in England and Non-England Regions"}
+include_graphics("../figure/datasetHist.pdf")
 ```
 
 
-The research question is
+According to the histogram of leave votes, it seems that England regions tend to be more supportive of Brexit than other regions. Hence, The research question is proposed as that
 
-**Were approval rates of Brexit greater in England or rest of the UK in 2016 referendum?**
+- *Were approval rates of Brexit greater in England or rest of the UK in 2016 referendum?*
 
+On the basis of our research question, regions are categorized as England or Non-England, thus, One-tail Student's T test and Mann-Whitney U test are chosen to be conducted to compare the difference of mean approval rates of Brexit. Moreover, 1000-iteration Monte Carlo simulations are carried out under a range of scenarios in order to investigate power and size of these tests.
 
 # Methodology
 
