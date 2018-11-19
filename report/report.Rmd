@@ -9,7 +9,6 @@ output:
     includes: null
     keep_tex: yes
     latex_engine: xelatex
-    number_sections: yes
 header-includes:
  \usepackage{booktabs}
  \usepackage{longtable}
@@ -29,8 +28,7 @@ csl: harvard.csl
 knitr::opts_chunk$set(echo = FALSE,
                       include = TRUE)
 
-library(dslabs)
-library(dplyr)
+
 library(knitr)
 library(kableExtra)
 ```
@@ -63,9 +61,13 @@ On the basis of our research question, regions are categorized as England or Non
 # Methodology
 
 Here to describe methods! 
+
 Here to describe methods! 
+
 Here to describe methods! 
+
 Here to describe methods! 
+
 Here to describe methods! 
 
 
@@ -73,62 +75,82 @@ Here to describe methods!
 
 The power of parametric and non-parametric tests, in terms of different sample sizes and effect sizes, are calculated based on 1000 simulated datasets, and the result are shown in two tables below.
 
-```{r power-tables}
-load("../data/3.RData")
+Stop float! Damn tables
+
+```{r power-tables, results='asis'}
+load("../data/6.RData")
 
 header <- c(group1 = 1, group2 = 10)
 names(header) <- c("Sample Size", "Effect Size")
-kable(pwr, caption = "Power of Student's T Test", booktabs=T) %>% 
+kable(pwr, caption = "Power of Student's T Test", booktabs=T, longtable = T) %>% 
   add_header_above(header = header, bold = T)
 
 
 names(header) <- c("Sample Size", "Effect Size")
-kable(pwrNonPar, caption = "Power of Mann-Whitney U Test", booktabs=T) %>% 
+kable(pwrNonPar, caption = "Power of Mann-Whitney U Test", booktabs=T, longtable = T) %>% 
   add_header_above(header = header, bold = T)
 
-
 ```
 
-```{r power-plot-t, fig.cap="Power of Student's t Test under Different Scenarios"}
-include_graphics("../figure/power_t.pdf")
+
+
+```{r power-plot, fig.cap="Power of Parametric and Non-parametric Tests under Different Scenarios"}
+include_graphics("../figure/power.pdf")
 ```
 
-```{r power-plot-mw, fig.cap="Power of Mann-Whitney U Test under Different Scenarios"}
-include_graphics("../figure/power_mw.pdf")
-```
+**Explain the power here**
 
+**Explain the power here**
+
+**Explain the power here**
+
+**Explain the power here**
+
+**Explain the power here**
 
 ```{r size-tables}
 header <- c(group1 = 1, group2 = 5, group3 = 5)
 names(header) <- c("Sample Size","SD Difference","SD Difference(record round to 0)")
-kable(siz, caption = "Size of Student's T Test", booktabs=T) %>% 
+kable(siz, caption = "Size of Student's T Test", booktabs=T, longtable = T) %>% 
   add_header_above(header = header, bold = T)
 
 
 names(header) <- c("Sample Size","SD Difference","SD Difference(record round to 0)")
-kable(sizNonPar, caption = "Size of Mann-Whitney U Test", booktabs=T) %>% 
-  add_header_above(header = header, bold = T)
+kable(sizNonPar, format = "latex",
+      caption = "Size of Mann-Whitney U Test", booktabs=T, longtable = T) %>% 
+  add_header_above(header = header, bold = T) %>% 
+  kable_styling(latex_options = c("repeat_header"))
 
 ```
 
 
 
-```{r size-plot-t, fig.cap="Size of Student's t Test under Different Scenarios"}
-include_graphics("../figure/size_t.pdf")
+```{r size-plot, fig.cap="Size of Parametric and Non-parametric Tests Under Different Scenarios"}
+include_graphics("../figure/size.pdf")
 ```
 
-```{r size-plot-mw, fig.cap="Size of Mann-Whitney U Test under Different Scenarios"}
-include_graphics("../figure/size_mw.pdf")
-```
+
+**Explain the size here**
+
+**Explain the size here**
+
+**Explain the size here**
+
+**Explain the size here**
 
 
 # Conclusion
 
 Here to draw conclusions! 
+
 Here to draw conclusions! 
+
 Here to draw conclusions! 
+
 Here to draw conclusions! 
+
 Here to draw conclusions! 
+
 
 \newpage
 # Reference
