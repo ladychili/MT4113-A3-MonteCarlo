@@ -62,6 +62,11 @@ On the basis of our research question, regions are categorized as England or Non
 
 # Methodology
 
+Here to describe methods! 
+Here to describe methods! 
+Here to describe methods! 
+Here to describe methods! 
+Here to describe methods! 
 
 
 # Result and Discussion
@@ -88,7 +93,7 @@ kable(pwrNonPar, caption = "Power of Mann-Whitney U Test", booktabs=T) %>%
 include_graphics("../figure/power_t.pdf")
 ```
 
-```{r power-plot-mw, fig.cap="Power of Mann-Whitney U Test Test under Different Scenarios"}
+```{r power-plot-mw, fig.cap="Power of Mann-Whitney U Test under Different Scenarios"}
 include_graphics("../figure/power_mw.pdf")
 ```
 
@@ -107,8 +112,28 @@ kable(sizNonPar, caption = "Size of Mann-Whitney U Test", booktabs=T) %>%
 ```
 
 
+
+```{r size-plot-t, fig.cap="Size of Student's t Test under Different Scenarios"}
+include_graphics("../figure/size_t.pdf")
+```
+
+```{r size-plot-mw, fig.cap="Size of Mann-Whitney U Test under Different Scenarios"}
+include_graphics("../figure/size_mw.pdf")
+```
+
+
 # Conclusion
 
+Here to draw conclusions! 
+Here to draw conclusions! 
+Here to draw conclusions! 
+Here to draw conclusions! 
+Here to draw conclusions! 
+
+\newpage
 # Reference
 
+<div id="refs"></div>
+
 # Appendix
+

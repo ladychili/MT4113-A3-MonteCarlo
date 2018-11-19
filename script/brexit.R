@@ -9,24 +9,11 @@ source("script/MonteCarlo.R")
 
 brexit <- read_csv("data/referendum.csv")
 
-# qplot(brexit[brexit$Region %in% c('Scotland','Wales','Northern Ireland'),]$`Percent Leave`, bins=10, 
-#       main = "Non-England Regions Vote for Brexit",
-#       xlab = "Percentage of Leave Votes",
-#       ylab = "Numer of Regions") +
-#   scale_y_continuous(breaks=seq(0,12,2))
-# 
-# qplot(brexit[!(brexit$Region %in% c('Scotland','Wales','Northern Ireland')),]$`Percent Leave`, bins =10,
-#       main = "England Regions Vote for Brexit",
-#       xlab = "Percentage of Leave Votes",
-#       ylab = "Numer of Regions") +
-# scale_y_continuous(breaks=seq(0,120,20))
-# table(brexit$Region)
-
 brxData <- brexit %>% select(Region, 'brexitRate' = `Percent Leave`)
 brxData$Region[!(brxData$Region %in% c('Scotland','Wales','Northern Ireland'))] <- 'England'
 brxData$Region[brxData$Region %in% c('Scotland','Wales','Northern Ireland')] <- 'NonEngland'
 
-pdf("figure/datasetHist.pdf", width = 5, height = 3)
+pdf("figure/datasetHist.pdf", width = 5.5, height = 2.5)
 ggplot(brxData, aes(brexitRate, fill = Region)) +
   geom_histogram(bins = 30, alpha = 0.7) + 
   geom_vline(xintercept=50,lwd = 1) +
@@ -140,4 +127,37 @@ ggplot(meltpwrNonPar, mapping = aes(spSize,value, color = efSize, group = efSize
   labs(x = 'Sample Size', y = 'Power', title = "Power of Mann-Whitney U Test") +
   theme(plot.title = element_text(hjust = 0.5))
 dev.off()
+
+# size-t
+
+meltsiz <- melt(siz, c("spSize","SDdiff"))
+meltsiz$rnd <- c(rep("No",50),rep("Yes",50))
+meltsiz$spSize <- as.factor(meltsiz$spSize)
+meltsiz$SDdiff <- as.factor(meltsiz$SDdiff)
+
+pdf("figure/size_t.pdf", width = 6, height = 3)
+ggplot(meltsiz,aes(spSize,value, color = SDdiff, shape = rnd, group=interaction(SDdiff,rnd))) +
+  geom_point(size = 2) +
+  geom_line() +
+  scale_color_brewer(limits=c(-1,0,3,5,8,10), palette=3, breaks=c(10,8,5,3,0), name='Difference of SD')+
+  labs(x = 'Sample Size', y = 'Size', title = "Size of Student's t Test", shape = "Round to 0") +
+  theme(plot.title = element_text(hjust = 0.5))
+dev.off()
+
+# size-mw
+
+meltsizNon <- melt(sizNonPar, c("spSize","SDdiff"))
+meltsizNon$rnd <- c(rep("No",50),rep("Yes",50))
+meltsizNon$spSize <- as.factor(meltsiz$spSize)
+meltsizNon$SDdiff <- as.factor(meltsiz$SDdiff)
+
+pdf("figure/size_mw.pdf", width = 6, height = 3)
+ggplot(meltsizNon,aes(spSize,value, color = SDdiff, shape = rnd, group=interaction(SDdiff,rnd))) +
+  geom_point(size = 2) +
+  geom_line() +
+  scale_color_brewer(limits=c(-1,0,3,5,8,10),palette=3, breaks=c(10,8,5,3,0), name='Difference of SD') +
+  labs(x = 'Sample Size', y = 'Size', title = "Size of Mann-Whitney U Test", shape = "Round to 0") +
+  theme(plot.title = element_text(hjust = 0.5))
+dev.off()
+
 
