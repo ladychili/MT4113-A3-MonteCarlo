@@ -26,12 +26,19 @@ ggplot(brxData, aes(brexitRate, fill = Region)) +
   annotate("text", x = c(25,75), y = 50, label = c("bold(Remain)","bold(Leave)"), parse = TRUE)
 dev.off()
 
-# summary
-truesum <- brxData %>% group_by(Region) %>% 
-  summarise(n = n(),
-            mean = mean(brexitRate),
-            sd = sd(brexitRate))
-truesum
+
+
+
+# tmp ---------------------------------------------------------------------
+
+
+for (i in 1:length(samplesize)) {
+  for (j in 1:length(c(-2,-1,1,2,3,4,7,10))) {
+    tmp_pwr[i,j] <- MonteCarlo(1000, spSize = samplesize[i], dat0 = c(45+effectsize[j],10), dat1 = c(45,8), 
+                           seed = 4113)
+  }
+}
+
 
 
 # Power-tables ------------------------------------------------------------

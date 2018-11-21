@@ -60,15 +60,24 @@ On the basis of our research question, regions are categorized as England or Non
 
 # Methodology
 
-Here to describe methods! 
+## Data Exploration
 
-Here to describe methods! 
+By organizing and exploring dataset *Referendum*, the properties of leave vote rates are summarized in table 1. It shows that the Brexit approval rate in England regions was approximate 10% higher than in Non-England regions on average. In general, England tended to leave the EU with leave vote rate more than a half, while other nations tended to remain with leave vote rate less than 50%. In the following sections, scenario design and data simulation are grounded on these properties.
 
-Here to describe methods! 
+```{r dataset}
+summry <- brxData %>% group_by(Region) %>% 
+  summarise(n = n(),
+            mean = mean(brexitRate),
+            sd = sd(brexitRate))
 
-Here to describe methods! 
+kable(summry, caption = "Summary of Leave Vote Rates in Regions of England and Non-England",
+      booktabs = T, longtable = T)
+```
 
-Here to describe methods! 
+
+## Scenario Design
+
+## Power and Size
 
 
 # Result and Discussion
@@ -77,7 +86,7 @@ The power of parametric and non-parametric tests, in terms of different sample s
 
 Stop float! Damn tables
 
-```{r power-tables, results='asis'}
+```{r power-tables}
 load("../data/6.RData")
 
 header <- c(group1 = 1, group2 = 10)
