@@ -28,23 +28,10 @@ dev.off()
 
 
 
-
-# tmp ---------------------------------------------------------------------
-
-
-for (i in 1:length(samplesize)) {
-  for (j in 1:length(c(-2,-1,1,2,3,4,7,10))) {
-    tmp_pwr[i,j] <- MonteCarlo(1000, spSize = samplesize[i], dat0 = c(45+effectsize[j],10), dat1 = c(45,8), 
-                           seed = 4113)
-  }
-}
-
-
-
 # Power-tables ------------------------------------------------------------
 
 samplesize <- c(10, 50, 100, 150, 200, 300, 400, 500, 700, 1000)
-effectsize <- seq(10) # mean difference between two groups
+effectsize <- c(-2,-1,1,2,3,4,7,10) # mean difference between two groups
 
 # calc power of t test using 1000 simulated datasets
 
@@ -118,7 +105,7 @@ meltpwr$spSize <- as.factor(meltpwr$spSize)
 p1 <- ggplot(meltpwr, mapping = aes(spSize,value, color = efSize, group = efSize)) +
   geom_line() +
   geom_point(size =2) + 
-  scale_color_viridis(direction = -1,breaks = c(1,4,7,10), name = 'Effect Size') +
+  scale_color_viridis(direction = -1,breaks = c(-2,1,4,7,10), name = 'Effect Size') +
   labs(x = 'Sample Size', y = 'Power', title = "Power of Student's t Test") +
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -131,7 +118,7 @@ meltpwrNonPar$spSize <- as.factor(meltpwrNonPar$spSize)
 p2 <- ggplot(meltpwrNonPar, mapping = aes(spSize,value, color = efSize, group = efSize)) +
   geom_line() +
   geom_point(size =2) + 
-  scale_color_viridis(direction = -1,breaks = c(1,4,7,10), name = 'Effect Size') +
+  scale_color_viridis(direction = -1,breaks = c(-2,1,4,7,10), name = 'Effect Size') +
   labs(x = 'Sample Size', y = 'Power', title = "Power of Mann-Whitney U Test") +
   theme(plot.title = element_text(hjust = 0.5))
 

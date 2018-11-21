@@ -54,15 +54,15 @@ include_graphics("../figure/datasetHist.pdf")
 
 According to the histogram of leave votes, it seems that England regions tend to be more supportive of Brexit than other regions. Hence, The research question is proposed as that
 
-- *Were approval rates of Brexit greater in England or rest of the UK in 2016 referendum?*
+- *Were approval rates of Brexit Higher in England than rest of the UK in 2016 referendum?*
 
 On the basis of our research question, regions are categorized as England or Non-England, thus, One-tail Student's T test and Mann-Whitney U test are chosen to be conducted to compare the difference of mean approval rates of Brexit. Moreover, 1000-iteration Monte Carlo simulations are carried out under a range of scenarios in order to investigate power and size of these tests.
 
 # Methodology
 
-## Data Exploration
+## Data Exploration and Tests Specification
 
-By organizing and exploring dataset *Referendum*, the properties of leave vote rates are summarized in table 1. It shows that the Brexit approval rate in England regions was approximate 10% higher than in Non-England regions on average. In general, England tended to leave the EU with leave vote rate more than a half, while other nations tended to remain with leave vote rate less than 50%. In the following sections, scenario design and data simulation are grounded on these properties.
+By organizing and exploring dataset *Referendum*, the properties of leave vote rates are summarized in table 1. It shows that the Brexit approval rate in England regions was approximate 10% higher than in Non-England regions on average. In general, England tended to leave the EU with leave vote rate more than a half, while other nations tended to remain with leave vote rate less than 50%. 
 
 ```{r dataset}
 summry <- brxData %>% group_by(Region) %>% 
@@ -74,8 +74,18 @@ kable(summry, caption = "Summary of Leave Vote Rates in Regions of England and N
       booktabs = T, longtable = T)
 ```
 
+Our research question involves two groups of sample,
+
+- Parametric:
+
+- Non-parametric: 
 
 ## Scenario Design
+
+Scenario design and data simulation are grounded on the properties shown in table 1 in previous section.
+
+To investigate the power of two tests, the difference of 
+
 
 ## Power and Size
 
