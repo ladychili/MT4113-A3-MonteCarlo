@@ -34,7 +34,7 @@ knitr::opts_chunk$set(echo = FALSE,
 library(tidyverse)
 library(knitr)
 library(kableExtra)
-load("../data/8clean.RData")
+load("../data/final.RData")
 ```
 
 *I conﬁrm that the following report and associated code is my own work, except where clearly indicated.*
@@ -50,8 +50,15 @@ More than 17 million people voted to leave the EU in 2016 Referendum in the UK. 
 
 Hundreds of thousands of people marched to London's Parliament Square for a referendum on the final Brexit deal in late October[@BBCNews2018]. In the EU referendum in 2016, approximately 52%, or more than 17 million people in the UK, voted to leave the European Union [@Becker2017]. To investigate what voters in different nations of the UK vote for, the dataset of EU referendum results by regions[@ElectoralCommission2016] are statistically analysed and tested in this report. The dateset contains numerous variates regarding the referendum outcome, yet only *Region* and *Percent Leave* are concerned in terms of our research objectives.
 
-```{r hist, fig.cap="Vote Outcome in England and Non-England Regions"}
-include_graphics("../figure/datasetHist.pdf")
+```{r hist, fig.cap="Vote Outcome in England and Non-England Regions", fig.width=5.5,fig.height=2.5}
+ggplot(brxData, aes(brexitRate, fill = Region)) +
+  geom_histogram(bins = 30, alpha = 0.7) + 
+  geom_vline(xintercept=50,lwd = 1) +
+  xlab("Percentage of Leave Votes") + xlim(c(0,100)) + 
+  ylab("Count of Regions") + 
+  ggtitle('Vote Outcome in England and Non-England Regions') + 
+  theme(plot.title = element_text(hjust = 0.5)) +
+  annotate("text", x = c(25,75), y = 50, label = c("bold(Remain)","bold(Leave)"), parse = TRUE)
 ```
 
 
