@@ -31,7 +31,7 @@ dev.off()
 # Power-tables ------------------------------------------------------------
 
 samplesize <- c(10, 50, 100, 150, 200, 300, 400, 500, 700, 1000)
-effectsize <- c(-2,-1,1,2,3,4,7,10) # mean difference between two groups
+effectsize <- c(1,3,6,10,15) # mean difference between two groups
 
 # calc power of t test using 1000 simulated datasets
 
@@ -60,18 +60,18 @@ for (i in 1:length(samplesize)) {
 
 # Size-tables -------------------------------------------------------------
 
-SDdiff <- rep(c(0,3,5,8,10),2) # Standard Deviation difference between two groups
+SDdiff <- rep(c(0,3,5,10),2) # Standard Deviation difference between two groups
 
 # calc size of t test using 1000 simulated datasets
 
 siz <- matrix(NA, length(samplesize), length(SDdiff), dimnames = list(samplesize, SDdiff))
 
 for (i in 1:length(samplesize)) {
-  for (j in 1:5) {
+  for (j in 1:4) {
     siz[i,j] <- MonteCarlo(1000, spSize = samplesize[i], dat0 = c(50,1+SDdiff[j]), dat1 = c(50,1),
                            seed = 4113)
   }
-  for (j in 6:10) {
+  for (j in 5:8) {
     siz[i,j] <- MonteCarlo(1000, spSize = samplesize[i], dat0 = c(50,1+SDdiff[j]), dat1 = c(50,1),
                            rndto = 0, seed = 4113)
   }
@@ -83,11 +83,11 @@ for (i in 1:length(samplesize)) {
 sizNonPar <- matrix(NA, length(samplesize), length(SDdiff), dimnames = list(samplesize, SDdiff))
 
 for (i in 1:length(samplesize)) {
-  for (j in 1:5) {
+  for (j in 1:4) {
     sizNonPar[i,j] <- MonteCarlo(1000, spSize = samplesize[i], dat0 = c(50,1+SDdiff[j]), dat1 = c(50,1),
                                  param = FALSE, seed = 4113)
   }
-  for (j in 6:10) {
+  for (j in 5:8) {
     sizNonPar[i,j] <- MonteCarlo(1000, spSize = samplesize[i], dat0 = c(50,1+SDdiff[j]), dat1 = c(50,1),
                                  rndto = 0, param = FALSE, seed = 4113)
   }
@@ -101,11 +101,12 @@ for (i in 1:length(samplesize)) {
 
 meltpwr <- melt(pwr,c("spSize","efSize"))
 meltpwr$spSize <- as.factor(meltpwr$spSize)
+meltpwr$efSize <- as.factor(meltpwr$efSize)
 
 p1 <- ggplot(meltpwr, mapping = aes(spSize,value, color = efSize, group = efSize)) +
   geom_line() +
   geom_point(size =2) + 
-  scale_color_viridis(direction = -1,breaks = c(-2,1,4,7,10), name = 'Effect Size') +
+  scale_color_brewer(limits=c(-1,effectsize), palette=1, breaks = rev(effectsize), name = 'Effect Size\n(Unit: %)') +
   labs(x = 'Sample Size', y = 'Power', title = "Power of Student's t Test") +
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -114,16 +115,17 @@ p1 <- ggplot(meltpwr, mapping = aes(spSize,value, color = efSize, group = efSize
 
 meltpwrNonPar <- melt(pwrNonPar,c("spSize","efSize"))
 meltpwrNonPar$spSize <- as.factor(meltpwrNonPar$spSize)
+meltpwrNonPar$efSize <- as.factor(meltpwrNonPar$efSize)
 
 p2 <- ggplot(meltpwrNonPar, mapping = aes(spSize,value, color = efSize, group = efSize)) +
   geom_line() +
   geom_point(size =2) + 
-  scale_color_viridis(direction = -1,breaks = c(-2,1,4,7,10), name = 'Effect Size') +
+  scale_color_brewer(limits=c(-1,effectsize), palette=1, breaks = rev(effectsize), name = 'Effect Size\n(Unit: %)') +
   labs(x = 'Sample Size', y = 'Power', title = "Power of Mann-Whitney U Test") +
   theme(plot.title = element_text(hjust = 0.5))
 
 # combine and save
-p <- ggarrange(p1,p2, ncol = 2, common.legend = TRUE, legend ="bottom")
+p <- ggarrange(p1,p2, ncol = 2, common.legend = TRUE, legend ="right")
 pdf("figure/power.pdf", width = 10, height = 4)
 p
 dev.off()
@@ -133,14 +135,14 @@ dev.off()
 
 # size of t test
 meltsiz <- melt(siz, c("spSize","SDdiff"))
-meltsiz$rnd <- c(rep("No",50),rep("Yes",50))
+meltsiz$rnd <- c(rep("No",40),rep("Yes",40))
 meltsiz$spSize <- as.factor(meltsiz$spSize)
 meltsiz$SDdiff <- as.factor(meltsiz$SDdiff)
 
 p1 <- ggplot(meltsiz,aes(spSize,value, color = SDdiff, shape = rnd, group=interaction(SDdiff,rnd))) +
   geom_point(size = 2) +
   geom_line() +
-  scale_color_brewer(limits=c(-1,0,3,5,8,10), palette=3, breaks=c(10,8,5,3,0), name='Difference of SD')+
+  scale_color_brewer(limits=c(-1,0,3,5,10), palette=3, breaks=c(10,5,3,0), name='Difference of SD\n(Unit: %)')+
   labs(x = 'Sample Size', y = 'Size', title = "Size of Student's t Test", shape = "Round to 0") +
   theme(plot.title = element_text(hjust = 0.5))
 
@@ -148,14 +150,14 @@ p1 <- ggplot(meltsiz,aes(spSize,value, color = SDdiff, shape = rnd, group=intera
 # size of MW test
 
 meltsizNon <- melt(sizNonPar, c("spSize","SDdiff"))
-meltsizNon$rnd <- c(rep("No",50),rep("Yes",50))
+meltsizNon$rnd <- c(rep("No",40),rep("Yes",40))
 meltsizNon$spSize <- as.factor(meltsiz$spSize)
 meltsizNon$SDdiff <- as.factor(meltsiz$SDdiff)
 
 p2 <- ggplot(meltsizNon,aes(spSize,value, color = SDdiff, shape = rnd, group=interaction(SDdiff,rnd))) +
   geom_point(size = 2) +
   geom_line() +
-  scale_color_brewer(limits=c(-1,0,3,5,8,10),palette=3, breaks=c(10,8,5,3,0), name='Difference of SD') +
+  scale_color_brewer(limits=c(-1,0,3,5,10),palette=3, breaks=c(10,5,3,0), name='Difference of SD\n(Unit: %)') +
   labs(x = 'Sample Size', y = 'Size', title = "Size of Mann-Whitney U Test", shape = "Round to 0") +
   theme(plot.title = element_text(hjust = 0.5))
 

@@ -103,7 +103,9 @@ For each attributes stated above, 10 datasets of different sample sizes from 10 
 
 ## Power and Size
 
-Two functions are created to complete the workflow. Function `simulating()` generates a dataset given conditions of scenario, e.g. sample size, mean and standard deviation of two groups of datasets. Function `MonteCarlo()` invokes `simulating()`, carry out specific test, store the $p$-value, by doing all these 1000 iterations it finally return the. The number of iteration, parametric or non-parametric test to be conducted are also arbitrary and can be
+Two functions are created to complete the workflow. Function `simulating()` generates a dataset given conditions of scenario, e.g. sample size, mean and standard deviation of two groups of datasets. Function `MonteCarlo()` invokes `simulating()`, carry out specific test, store the $p$-value, by doing all these 1000 iterations it finally return the proportion of rejecting $H_0$. The number of iteration, parametric or non-parametric test to be conducted are also arbitrary and can be specified as inputs. Also, both functions have a *seed* argument for reproducibility purpose.
+
+A 10 by 5 *power* matrix is evaluated for T test and Mann-Whitney U Test respectively. 10 rows are for 10 different sample sizes, 5 columns are for different effect sizes. Similarly, two 10 by 8 *size* matrices are evaluated for two test, 8 columns are for 4 differences of standard deviation and round to 0 or not.
 
 # Result and Discussion
 
