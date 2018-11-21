@@ -149,7 +149,7 @@ research question is proposed as that
 \begin{itemize}
 \tightlist
 \item
-  \emph{Were approval rates of Brexit greater in England or rest of the
+  \emph{Were approval rates of Brexit Higher in England than rest of the
   UK in 2016 referendum?}
 \end{itemize}
 
@@ -163,15 +163,95 @@ investigate power and size of these tests.
 \hypertarget{methodology}{%
 \section{Methodology}\label{methodology}}
 
-Here to describe methods!
+\hypertarget{data-exploration-and-tests-specification}{%
+\subsection{Data Exploration and Tests
+Specification}\label{data-exploration-and-tests-specification}}
 
-Here to describe methods!
+By organizing and exploring dataset \emph{Referendum}, the properties of
+leave vote rates are summarized in table 1. It shows that the Brexit
+approval rate in England regions was approximate 10\% higher than in
+Non-England regions on average. In general, England tended to leave the
+EU with leave vote rate more than a half, while other nations tended to
+remain with leave vote rate less than 50\%.
 
-Here to describe methods!
+\begin{longtable}[t]{lrrr}
+\caption{\label{tab:dataset}Summary of Leave Vote Rates in Regions of England and Non-England}\\
+\toprule
+Region & n & mean & sd\\
+\midrule
+England & 327 & 54.34725 & 10.382207\\
+NonEngland & 55 & 44.91364 & 8.884886\\
+\bottomrule
+\end{longtable}
 
-Here to describe methods!
+What is concerned in this research is whether the leave vote rates in
+England regions \emph{higher} than in Non-England regions, which
+involves two groups of samples. Therefore, the statistical tests to be
+conducted should be one-tailed test for two groups. The chosen tests are
 
-Here to describe methods!
+\begin{itemize}
+\item
+  Parametric: One-tailed Student's t Test
+\item
+  Non-parametric: One-tailed Mann-Whitney U Test
+\end{itemize}
+
+The null Hypothesis and alternative hypothesis are
+
+\begin{itemize}
+\item
+  \(H_0\): \(\mu_{e} - \mu_{o} \le 0\)
+\item
+  \(H_1\): \(\mu_{e} - \mu_{o} > 0\)
+\end{itemize}
+
+where \(\mu_{e}\) is the mean leave vote rate in England, and
+\(\mu_{o}\) is the mean leave vote rate in the rest of the UK.
+
+\hypertarget{scenario-design}{%
+\subsection{Scenario Design}\label{scenario-design}}
+
+Scenario design and data simulation are grounded on the properties shown
+in table 1 in previous section.
+
+To investigate the \emph{power} of two tests, the difference of mean
+leave vote rates, a.k.a. the effect size, are set to be positive, where
+\(H_0\) is false. The specific effect sizes of simulating data are
+chosen to be 1\%, 3\%, 6\%, 10\%, and 15\%, covering scenarios under
+which the mean differences are less than, close to, or greater than the
+actual mean difference 9.4\%. The steps between those effect sizes are
+incremental, because it is speculated that the power of a test is more
+responsive in smaller scale. The standard deviation are set to be 10\%
+for England group and 8\% for Non-England group, which is close to the
+true properties.
+
+To investigate the \emph{size} of two tests, the effect sizes are set to
+be 0, where \(H_0\) is true. There are two groups of scenarios, one
+simulated with all percentage records rounded to 0, another as default.
+For each scenario of one group, the difference of standard deviation are
+set to be 0\%, 3\%, 5\%, 10\%.
+
+For each attributes stated above, 10 datasets of different sample sizes
+from 10 to 1000 are generated to be test.
+
+\hypertarget{power-and-size}{%
+\subsection{Power and Size}\label{power-and-size}}
+
+Two functions are created to complete the workflow. Function
+\texttt{simulating()} generates a dataset given conditions of scenario,
+e.g.~sample size, mean and standard deviation of two groups of datasets.
+Function \texttt{MonteCarlo()} invokes \texttt{simulating()}, carry out
+specific test, store the \(p\)-value, by doing all these 1000 iterations
+it finally return the proportion of rejecting \(H_0\). The number of
+iteration, parametric or non-parametric test to be conducted are also
+arbitrary and can be specified as inputs. Also, both functions have a
+\emph{seed} argument for reproducibility purpose.
+
+A 10 by 5 \emph{power} matrix is evaluated for T test and Mann-Whitney U
+Test respectively. 10 rows are for 10 different sample sizes, 5 columns
+are for different effect sizes. Similarly, two 10 by 8 \emph{size}
+matrices are evaluated for two test, 8 columns are for 4 differences of
+standard deviation and round to 0 or not.
 
 \hypertarget{result-and-discussion}{%
 \section{Result and Discussion}\label{result-and-discussion}}
@@ -180,47 +260,45 @@ The power of parametric and non-parametric tests, in terms of different
 sample sizes and effect sizes, are calculated based on 1000 simulated
 datasets, and the result are shown in two tables below.
 
-Stop float! Damn tables
-
-\begin{longtable}[t]{lrrrrrrrrrr}
+\begin{longtable}[t]{lrrrrr}
 \caption{\label{tab:power-tables}Power of Student's T Test}\\
 \toprule
-\multicolumn{ 1}{c}{\bfseries Sample Size} & \multicolumn{10}{c}{\bfseries Effect Size} \\
-\cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-11}
-  & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{5}{c}{\bfseries Effect Size} \\
+\cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-6}
+  & 1 & 3 & 6 & 10 & 15\\
 \midrule
-10 & 0.000 & 0.001 & 0.009 & 0.051 & 0.144 & 0.32 & 0.543 & 0.743 & 0.883 & 0.953\\
-50 & 0.000 & 0.006 & 0.510 & 0.992 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
-100 & 0.000 & 0.323 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
-150 & 0.000 & 0.923 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
-200 & 0.001 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
+10 & 0.000 & 0.009 & 0.32 & 0.953 & 1\\
+50 & 0.000 & 0.510 & 1.00 & 1.000 & 1\\
+100 & 0.000 & 1.000 & 1.00 & 1.000 & 1\\
+150 & 0.000 & 1.000 & 1.00 & 1.000 & 1\\
+200 & 0.001 & 1.000 & 1.00 & 1.000 & 1\\
 \addlinespace
-300 & 0.047 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
-400 & 0.296 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
-500 & 0.720 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
-700 & 0.995 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
-1000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00 & 1.000 & 1.000 & 1.000 & 1.000\\
+300 & 0.047 & 1.000 & 1.00 & 1.000 & 1\\
+400 & 0.296 & 1.000 & 1.00 & 1.000 & 1\\
+500 & 0.720 & 1.000 & 1.00 & 1.000 & 1\\
+700 & 0.995 & 1.000 & 1.00 & 1.000 & 1\\
+1000 & 1.000 & 1.000 & 1.00 & 1.000 & 1\\
 \bottomrule
 \end{longtable}
 
-\begin{longtable}[t]{lrrrrrrrrrr}
+\begin{longtable}[t]{lrrrrr}
 \caption{\label{tab:power-tables}Power of Mann-Whitney U Test}\\
 \toprule
-\multicolumn{ 1}{c}{\bfseries Sample Size} & \multicolumn{10}{c}{\bfseries Effect Size} \\
-\cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-11}
-  & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10\\
+\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{5}{c}{\bfseries Effect Size} \\
+\cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-6}
+  & 1 & 3 & 6 & 10 & 15\\
 \midrule
-10 & 0.001 & 0.003 & 0.016 & 0.065 & 0.185 & 0.358 & 0.541 & 0.724 & 0.848 & 0.92\\
-50 & 0.000 & 0.031 & 0.565 & 0.982 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
-100 & 0.000 & 0.372 & 0.998 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
-150 & 0.003 & 0.892 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
-200 & 0.009 & 0.997 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
+10 & 0.001 & 0.016 & 0.358 & 0.92 & 1\\
+50 & 0.000 & 0.565 & 1.000 & 1.00 & 1\\
+100 & 0.000 & 0.998 & 1.000 & 1.00 & 1\\
+150 & 0.003 & 1.000 & 1.000 & 1.00 & 1\\
+200 & 0.009 & 1.000 & 1.000 & 1.00 & 1\\
 \addlinespace
-300 & 0.072 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
-400 & 0.305 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
-500 & 0.634 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
-700 & 0.975 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
-1000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & 1.00\\
+300 & 0.072 & 1.000 & 1.000 & 1.00 & 1\\
+400 & 0.305 & 1.000 & 1.000 & 1.00 & 1\\
+500 & 0.634 & 1.000 & 1.000 & 1.00 & 1\\
+700 & 0.975 & 1.000 & 1.000 & 1.00 & 1\\
+1000 & 1.000 & 1.000 & 1.000 & 1.00 & 1\\
 \bottomrule
 \end{longtable}
 
@@ -241,57 +319,57 @@ Scenarios}
 
 \textbf{Explain the power here}
 
-\begin{longtable}[t]{lrrrrrrrrrr}
+\begin{longtable}[t]{lrrrrrrrr}
 \caption{\label{tab:size-tables}Size of Student's T Test}\\
 \toprule
-\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{5}{c}{\bfseries SD Difference} & \multicolumn{5}{c}{\bfseries SD Difference(record round to 0)} \\
-\cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-6} \cmidrule(l{2pt}r{2pt}){7-11}
-  & 0 & 3 & 5 & 8 & 10 & 0 & 3 & 5 & 8 & 10\\
+\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{4}{c}{\bfseries SD Difference} & \multicolumn{4}{c}{\bfseries SD Difference(record round to 0)} \\
+\cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-5} \cmidrule(l{2pt}r{2pt}){6-9}
+  & 0 & 3 & 5 & 10 & 0 & 3 & 5 & 10\\
 \midrule
-10 & 0 & 0.017 & 0.025 & 0.032 & 0.032 & 0 & 0.014 & 0.025 & 0.033 & 0.035\\
-50 & 0 & 0.009 & 0.022 & 0.031 & 0.034 & 0 & 0.011 & 0.017 & 0.033 & 0.035\\
-100 & 0 & 0.012 & 0.020 & 0.023 & 0.023 & 0 & 0.014 & 0.020 & 0.023 & 0.024\\
-150 & 0 & 0.019 & 0.027 & 0.027 & 0.031 & 0 & 0.019 & 0.026 & 0.029 & 0.030\\
-200 & 0 & 0.009 & 0.021 & 0.024 & 0.025 & 0 & 0.010 & 0.017 & 0.022 & 0.028\\
+10 & 0 & 0.017 & 0.025 & 0.032 & 0 & 0.014 & 0.025 & 0.035\\
+50 & 0 & 0.009 & 0.022 & 0.034 & 0 & 0.011 & 0.017 & 0.035\\
+100 & 0 & 0.012 & 0.020 & 0.023 & 0 & 0.014 & 0.020 & 0.024\\
+150 & 0 & 0.019 & 0.027 & 0.031 & 0 & 0.019 & 0.026 & 0.030\\
+200 & 0 & 0.009 & 0.021 & 0.025 & 0 & 0.010 & 0.017 & 0.028\\
 \addlinespace
-300 & 0 & 0.010 & 0.022 & 0.031 & 0.034 & 0 & 0.011 & 0.025 & 0.033 & 0.036\\
-400 & 0 & 0.019 & 0.029 & 0.036 & 0.038 & 0 & 0.018 & 0.030 & 0.040 & 0.041\\
-500 & 0 & 0.016 & 0.025 & 0.034 & 0.039 & 0 & 0.015 & 0.025 & 0.031 & 0.038\\
-700 & 0 & 0.013 & 0.022 & 0.029 & 0.034 & 0 & 0.013 & 0.020 & 0.031 & 0.033\\
-1000 & 0 & 0.015 & 0.029 & 0.033 & 0.036 & 0 & 0.013 & 0.028 & 0.034 & 0.036\\
+300 & 0 & 0.010 & 0.022 & 0.034 & 0 & 0.011 & 0.025 & 0.036\\
+400 & 0 & 0.019 & 0.029 & 0.038 & 0 & 0.018 & 0.030 & 0.041\\
+500 & 0 & 0.016 & 0.025 & 0.039 & 0 & 0.015 & 0.025 & 0.038\\
+700 & 0 & 0.013 & 0.022 & 0.034 & 0 & 0.013 & 0.020 & 0.033\\
+1000 & 0 & 0.015 & 0.029 & 0.036 & 0 & 0.013 & 0.028 & 0.036\\
 \bottomrule
 \end{longtable}
 
-\begin{longtable}[t]{lrrrrrrrrrr}
+\begin{longtable}[t]{lrrrrrrrr}
 \caption{\label{tab:size-tables}Size of Mann-Whitney U Test}\\
 \toprule
-\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{5}{c}{\bfseries SD Difference} & \multicolumn{5}{c}{\bfseries SD Difference(record round to 0)} \\
-\cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-6} \cmidrule(l{2pt}r{2pt}){7-11}
-  & 0 & 3 & 5 & 8 & 10 & 0 & 3 & 5 & 8 & 10\\
+\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{4}{c}{\bfseries SD Difference} & \multicolumn{4}{c}{\bfseries SD Difference(record round to 0)} \\
+\cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-5} \cmidrule(l{2pt}r{2pt}){6-9}
+  & 0 & 3 & 5 & 10 & 0 & 3 & 5 & 10\\
 \midrule
 \endfirsthead
 \caption[]{Size of Mann-Whitney U Test \textit{(continued)}}\\
 \toprule
-\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{5}{c}{\bfseries SD Difference} & \multicolumn{5}{c}{\bfseries SD Difference(record round to 0)} \\
-\cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-6} \cmidrule(l{2pt}r{2pt}){7-11}
-  & 0 & 3 & 5 & 8 & 10 & 0 & 3 & 5 & 8 & 10\\
+\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{4}{c}{\bfseries SD Difference} & \multicolumn{4}{c}{\bfseries SD Difference(record round to 0)} \\
+\cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-5} \cmidrule(l{2pt}r{2pt}){6-9}
+  & 0 & 3 & 5 & 10 & 0 & 3 & 5 & 10\\
 \midrule
 \endhead
 \
 \endfoot
 \bottomrule
 \endlastfoot
-10 & 0 & 0.029 & 0.041 & 0.049 & 0.049 & 0 & 0.031 & 0.047 & 0.054 & 0.057\\
-50 & 0 & 0.028 & 0.046 & 0.054 & 0.057 & 0 & 0.031 & 0.047 & 0.056 & 0.058\\
-100 & 0 & 0.028 & 0.048 & 0.063 & 0.065 & 0 & 0.029 & 0.045 & 0.062 & 0.070\\
-150 & 0 & 0.033 & 0.049 & 0.057 & 0.057 & 0 & 0.032 & 0.045 & 0.059 & 0.057\\
-200 & 0 & 0.026 & 0.045 & 0.056 & 0.061 & 0 & 0.028 & 0.047 & 0.055 & 0.061\\
+10 & 0 & 0.029 & 0.041 & 0.049 & 0 & 0.031 & 0.047 & 0.057\\
+50 & 0 & 0.028 & 0.046 & 0.057 & 0 & 0.031 & 0.047 & 0.058\\
+100 & 0 & 0.028 & 0.048 & 0.065 & 0 & 0.029 & 0.045 & 0.070\\
+150 & 0 & 0.033 & 0.049 & 0.057 & 0 & 0.032 & 0.045 & 0.057\\
+200 & 0 & 0.026 & 0.045 & 0.061 & 0 & 0.028 & 0.047 & 0.061\\
 \addlinespace
-300 & 0 & 0.036 & 0.051 & 0.066 & 0.071 & 0 & 0.034 & 0.056 & 0.067 & 0.075\\
-400 & 0 & 0.043 & 0.064 & 0.074 & 0.080 & 0 & 0.044 & 0.064 & 0.076 & 0.080\\
-500 & 0 & 0.034 & 0.051 & 0.064 & 0.066 & 0 & 0.027 & 0.051 & 0.063 & 0.069\\
-700 & 0 & 0.029 & 0.048 & 0.054 & 0.057 & 0 & 0.034 & 0.050 & 0.058 & 0.062\\
-1000 & 0 & 0.038 & 0.054 & 0.065 & 0.071 & 0 & 0.037 & 0.056 & 0.063 & 0.070\\*
+300 & 0 & 0.036 & 0.051 & 0.071 & 0 & 0.034 & 0.056 & 0.075\\
+400 & 0 & 0.043 & 0.064 & 0.080 & 0 & 0.044 & 0.064 & 0.080\\
+500 & 0 & 0.034 & 0.051 & 0.066 & 0 & 0.027 & 0.051 & 0.069\\
+700 & 0 & 0.029 & 0.048 & 0.057 & 0 & 0.034 & 0.050 & 0.062\\
+1000 & 0 & 0.038 & 0.054 & 0.071 & 0 & 0.037 & 0.056 & 0.070\\*
 \end{longtable}
 
 \begin{figure}

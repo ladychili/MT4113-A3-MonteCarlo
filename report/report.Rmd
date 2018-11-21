@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = FALSE,
 library(tidyverse)
 library(knitr)
 library(kableExtra)
-load("../data/7clean.RData")
+load("../data/8clean.RData")
 ```
 
 *I conﬁrm that the following report and associated code is my own work, except where clearly indicated.*
@@ -103,7 +103,9 @@ For each attributes stated above, 10 datasets of different sample sizes from 10 
 
 ## Power and Size
 
-Two functions are created to complete the workflow. Function `simulating()` generates a dataset given conditions of scenario, e.g. sample size, mean and standard deviation of two groups of datasets. Function `MonteCarlo()` invokes `simulating()`, carry out specific test, store the $p$-value, by doing all these 1000 iterations it finally return the. The number of iteration, parametric or non-parametric test to be conducted are also arbitrary and can be
+Two functions are created to complete the workflow. Function `simulating()` generates a dataset given conditions of scenario, e.g. sample size, mean and standard deviation of two groups of datasets. Function `MonteCarlo()` invokes `simulating()`, carry out specific test, store the $p$-value, by doing all these 1000 iterations it finally return the proportion of rejecting $H_0$. The number of iteration, parametric or non-parametric test to be conducted are also arbitrary and can be specified as inputs. Also, both functions have a *seed* argument for reproducibility purpose.
+
+A 10 by 5 *power* matrix is evaluated for T test and Mann-Whitney U Test respectively. 10 rows are for 10 different sample sizes, 5 columns are for different effect sizes. Similarly, two 10 by 8 *size* matrices are evaluated for two test, 8 columns are for 4 differences of standard deviation and round to 0 or not.
 
 # Result and Discussion
 
@@ -113,7 +115,7 @@ The power of parametric and non-parametric tests, in terms of different sample s
 
 ```{r power-tables}
 
-header <- c(group1 = 1, group2 = 10)
+header <- c(group1 = 1, group2 = 5)
 names(header) <- c("Sample Size", "Effect Size")
 kable(pwr, caption = "Power of Student's T Test", booktabs=T, longtable = T) %>% 
   add_header_above(header = header, bold = T)
@@ -142,7 +144,7 @@ include_graphics("../figure/power.pdf")
 **Explain the power here**
 
 ```{r size-tables}
-header <- c(group1 = 1, group2 = 5, group3 = 5)
+header <- c(group1 = 1, group2 = 4, group3 = 4)
 names(header) <- c("Sample Size","SD Difference","SD Difference(record round to 0)")
 kable(siz, caption = "Size of Student's T Test", booktabs=T, longtable = T) %>% 
   add_header_above(header = header, bold = T)
