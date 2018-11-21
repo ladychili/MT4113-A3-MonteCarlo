@@ -1,7 +1,7 @@
 library(snow)
-MonteCarlo <- function(n = 1000, spSize, dat0, dat1, rndto = NULL, param = TRUE, seed = NULL) {
+MonteCarlo <- function(n = 1000, spSize, dat0, dat1, rndto = NULL, param = TRUE, seed = NULL, core = 3) {
   
-  mycl <- makeSOCKcluster(rep('localhost',3))
+  mycl <- makeSOCKcluster(rep('localhost',core))
   if (hasArg(seed)) set.seed(seed)
   seedindex <- sample(1e4, size = n)
   datasets <- parLapply(mycl, seedindex, simulating, spSize=spSize, dat0=dat0, dat1=dat1)
