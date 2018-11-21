@@ -24,7 +24,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{hyperref}
 \hypersetup{unicode=true,
-            pdftitle={MT4113 - Report},
+            pdftitle={MT4113: Assignment 3, Monte Carlo Simulation},
             pdfauthor={180024570},
             pdfborder={0 0 0},
             breaklinks=true}
@@ -47,7 +47,7 @@
 \setlength{\emergencystretch}{3em}  % prevent overfull lines
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
-\setcounter{secnumdepth}{0}
+\setcounter{secnumdepth}{5}
 % Redefines (sub)paragraphs to behave more like sections
 \ifx\paragraph\undefined\else
 \let\oldparagraph\paragraph
@@ -74,7 +74,7 @@
 
 \setlength{\droptitle}{-2em}
 
-  \title{MT4113 - Report}
+  \title{MT4113: Assignment 3, Monte Carlo Simulation}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
     \author{180024570}
@@ -82,7 +82,7 @@
   \postauthor{\par}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{07/11/2018}
+    \date{21/11/2018}
 
 \usepackage{subfig}
 \usepackage{booktabs}
@@ -108,9 +108,8 @@
 \emph{I conﬁrm that the following report and associated code is my own
 work, except where clearly indicated.}
 
-\newpage
-
-\section*{\centering Abstract}
+\hypertarget{abstract}{%
+\section{Abstract}\label{abstract}}
 
 More than 17 million people voted to leave the EU in 2016 Referendum in
 the UK. This statistical report investigated the difference of approval
@@ -118,9 +117,7 @@ rates of Brexit in England and the rest of the UK by carrying out both
 parametric and non-parametric tests. Particularly, Monte Carlo
 simulation is conducted on the referendum dataset by regions, to
 research the properties of those statistical tests under a range of
-different scenarios. \emph{add a bit summary of result}
-
-\newpage
+different scenarios.
 
 \hypertarget{motivation}{%
 \section{Motivation}\label{motivation}}
@@ -179,8 +176,8 @@ remain with leave vote rate less than 50\%.
 \toprule
 Region & n & mean & sd\\
 \midrule
-England & 327 & 54.34725 & 10.382207\\
-NonEngland & 55 & 44.91364 & 8.884886\\
+England & 327 & 54.35 & 10.38\\
+NonEngland & 55 & 44.91 & 8.88\\
 \bottomrule
 \end{longtable}
 
@@ -234,36 +231,39 @@ set to be 0\%, 3\%, 5\%, 10\%.
 For each attributes stated above, 10 datasets of different sample sizes
 from 10 to 1000 are generated to be test.
 
-\hypertarget{power-and-size}{%
-\subsection{Power and Size}\label{power-and-size}}
+\hypertarget{monte-carlo-simulation}{%
+\subsection{Monte Carlo Simulation}\label{monte-carlo-simulation}}
 
 Two functions are created to complete the workflow. Function
 \texttt{simulating()} generates a dataset given conditions of scenario,
 e.g.~sample size, mean and standard deviation of two groups of datasets.
-Function \texttt{MonteCarlo()} invokes \texttt{simulating()}, carry out
-specific test, store the \(p\)-value, by doing all these 1000 iterations
-it finally return the proportion of rejecting \(H_0\). The number of
-iteration, parametric or non-parametric test to be conducted are also
-arbitrary and can be specified as inputs. Also, both functions have a
-\emph{seed} argument for reproducibility purpose.
+Function \texttt{MonteCarlo()} invokes \texttt{simulating()}, carries
+out specific test and stores the \(p\)-value, by doing all these 1000
+iterations it finally return the proportion of rejecting \(H_0\). The
+number of iteration, parametric or non-parametric test to be conducted
+are also arbitrary and can be specified as inputs. Also, both functions
+have a \emph{seed} argument for reproducibility purpose.
 
-A 10 by 5 \emph{power} matrix is evaluated for T test and Mann-Whitney U
-Test respectively. 10 rows are for 10 different sample sizes, 5 columns
+A 10 by 5 \emph{power} matrix is evaluated for t test and Mann-Whitney U
+test respectively. 10 rows are for 10 different sample sizes, 5 columns
 are for different effect sizes. Similarly, two 10 by 8 \emph{size}
-matrices are evaluated for two test, 8 columns are for 4 differences of
+matrices are evaluated for two tests, 8 columns are for 4 differences of
 standard deviation and round to 0 or not.
 
 \hypertarget{result-and-discussion}{%
 \section{Result and Discussion}\label{result-and-discussion}}
 
-The power of parametric and non-parametric tests, in terms of different
-sample sizes and effect sizes, are calculated based on 1000 simulated
-datasets, and the result are shown in two tables below.
+Each cell of the \emph{power} matrix is calculated based on 1000 times
+of test, and the outcomes for are t test and Mann-Whitney U test are
+respectively shown in table 2 and table 3.
 
+\begin{table}[!htb]
+    \begin{minipage}{.5\linewidth}
+      \centering 
 \begin{longtable}[t]{lrrrrr}
 \caption{\label{tab:power-tables}Power of Student's T Test}\\
 \toprule
-\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{5}{c}{\bfseries Effect Size} \\
+\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{5}{c}{\bfseries Effect Size (Unit: \%)} \\
 \cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-6}
   & 1 & 3 & 6 & 10 & 15\\
 \midrule
@@ -279,12 +279,13 @@ datasets, and the result are shown in two tables below.
 700 & 0.995 & 1.000 & 1.00 & 1.000 & 1\\
 1000 & 1.000 & 1.000 & 1.00 & 1.000 & 1\\
 \bottomrule
-\end{longtable}
-
+\end{longtable} \end{minipage}%
+    \begin{minipage}{.5\linewidth}
+      \centering 
 \begin{longtable}[t]{lrrrrr}
 \caption{\label{tab:power-tables}Power of Mann-Whitney U Test}\\
 \toprule
-\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{5}{c}{\bfseries Effect Size} \\
+\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{5}{c}{\bfseries Effect Size (Unit: \%)} \\
 \cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-6}
   & 1 & 3 & 6 & 10 & 15\\
 \midrule
@@ -300,7 +301,23 @@ datasets, and the result are shown in two tables below.
 700 & 0.975 & 1.000 & 1.000 & 1.00 & 1\\
 1000 & 1.000 & 1.000 & 1.000 & 1.00 & 1\\
 \bottomrule
-\end{longtable}
+\end{longtable} \end{minipage} 
+\end{table}
+
+The result suggests that, for both parametric and non-parametric tests,
+small effect size like 1 results in low power, even 0 power. With sample
+size increasing, the power of test also increases. Under scenarios with
+small sample size, the power of test is positively related to the effect
+size. Even sample size is as small as 10, the power can be appreciably
+high when effect size reach 10 or greater.
+
+By plotting the power over sample size(fig. 2), it is clear to see that
+sample size is also positively related to power of tests. Besides, the
+plots indicate that there is no sensible power difference between
+parametric and non-parametric tests under same scenario. The sample
+sizes of two groups in the true dataset are respectively 327 and 55, and
+the mean difference of two samples are round 10. In this case, both t
+test and Mann-Whitney test have significant power estimates.
 
 \begin{figure}
 \centering
@@ -309,20 +326,17 @@ datasets, and the result are shown in two tables below.
 Scenarios}
 \end{figure}
 
-\textbf{Explain the power here}
-
-\textbf{Explain the power here}
-
-\textbf{Explain the power here}
-
-\textbf{Explain the power here}
-
-\textbf{Explain the power here}
+Likewise, each cell of the \emph{size} matrix is calculated based on
+1000 times of test, and the outcomes for are t test and Mann-Whitney U
+test are respectively shown in table 4 and 5. The \emph{size} matrix
+suggest that, the larger the difference of standard deviation is, the
+higher the sizes of tests are, given identical sample size. When the
+difference is 0, the size is always zero.
 
 \begin{longtable}[t]{lrrrrrrrr}
 \caption{\label{tab:size-tables}Size of Student's T Test}\\
 \toprule
-\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{4}{c}{\bfseries SD Difference} & \multicolumn{4}{c}{\bfseries SD Difference(record round to 0)} \\
+\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{4}{c}{\bfseries SD Difference} & \multicolumn{4}{c}{\bfseries SD Difference(rounded)} \\
 \cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-5} \cmidrule(l{2pt}r{2pt}){6-9}
   & 0 & 3 & 5 & 10 & 0 & 3 & 5 & 10\\
 \midrule
@@ -343,14 +357,14 @@ Scenarios}
 \begin{longtable}[t]{lrrrrrrrr}
 \caption{\label{tab:size-tables}Size of Mann-Whitney U Test}\\
 \toprule
-\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{4}{c}{\bfseries SD Difference} & \multicolumn{4}{c}{\bfseries SD Difference(record round to 0)} \\
+\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{4}{c}{\bfseries SD Difference} & \multicolumn{4}{c}{\bfseries SD Difference(rounded)} \\
 \cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-5} \cmidrule(l{2pt}r{2pt}){6-9}
   & 0 & 3 & 5 & 10 & 0 & 3 & 5 & 10\\
 \midrule
 \endfirsthead
 \caption[]{Size of Mann-Whitney U Test \textit{(continued)}}\\
 \toprule
-\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{4}{c}{\bfseries SD Difference} & \multicolumn{4}{c}{\bfseries SD Difference(record round to 0)} \\
+\multicolumn{1}{c}{\bfseries Sample Size} & \multicolumn{4}{c}{\bfseries SD Difference} & \multicolumn{4}{c}{\bfseries SD Difference(rounded)} \\
 \cmidrule(l{2pt}r{2pt}){1-1} \cmidrule(l{2pt}r{2pt}){2-5} \cmidrule(l{2pt}r{2pt}){6-9}
   & 0 & 3 & 5 & 10 & 0 & 3 & 5 & 10\\
 \midrule
@@ -372,6 +386,15 @@ Scenarios}
 1000 & 0 & 0.038 & 0.054 & 0.071 & 0 & 0.037 & 0.056 & 0.070\\*
 \end{longtable}
 
+By visualizing the two verbose tables(see fig. 3), it is obvious that,
+in contrast to power, the size of test does not vary over sample size.
+The true difference of sample standard deviations is 1.5\%, falling
+between 0\% and 3\%, resulting relatively low size for both tests. Also,
+there is no distinct effect of rounding percentage of vote rate to
+integer. However, the different scale of y-asix is one thing worth
+noticing, which indicates that the size of Mann-Whitney test is greater
+than t test in general.
+
 \begin{figure}
 \centering
 \includegraphics{../figure/size.pdf}
@@ -379,26 +402,24 @@ Scenarios}
 Scenarios}
 \end{figure}
 
-\textbf{Explain the size here}
-
-\textbf{Explain the size here}
-
-\textbf{Explain the size here}
-
-\textbf{Explain the size here}
+In summary, effect size and variance have considerable impacts on power
+and size of tests, but there is not much can be done to the properties
+of population. Nevertheless, the result analysis does indicate that
+larger sample size leads to greater power of test, and parametric test
+shows better performance with smaller size under identical scenario.
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
 
-Here to draw conclusions!
+Both t test and Mann-Whitney U test rejected the null hypothesis, and
+these tests has convincible power and size according to the result
+analysis of Monte Carlo simulation. We can statistically infer that the
+approval rates of Brexit were higher in England than rest of the UK in
+2016 referendum.
 
-Here to draw conclusions!
-
-Here to draw conclusions!
-
-Here to draw conclusions!
-
-Here to draw conclusions!
+Generally, we can also conclude that it is prudent to enlarge the sample
+size to reach higher power of test and choose parametric test when we
+can assume the distribution of population.
 
 \newpage
 

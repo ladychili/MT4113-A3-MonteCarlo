@@ -1,7 +1,7 @@
 ---
-title: "MT4113 - Report"
+title: "MT4113: Assignment 3, Monte Carlo Simulation"
 author: '180024570'
-date: "07/11/2018"
+date: "21/11/2018"
 output:
   pdf_document:
     extra_dependencies: subfig
@@ -9,6 +9,7 @@ output:
     includes: null
     keep_tex: yes
     latex_engine: xelatex
+    number_sections: yes
 header-includes:
  \usepackage{booktabs}
  \usepackage{longtable}
@@ -37,13 +38,12 @@ load("../data/8clean.RData")
 *I conﬁrm that the following report and associated code is my own work, except where clearly indicated.*
 
 
-\newpage
 
-\section*{\centering Abstract}
 
-More than 17 million people voted to leave the EU in 2016 Referendum in the UK. This statistical report investigated the difference of approval rates of Brexit in England and the rest of the UK by carrying out both parametric and non-parametric tests. Particularly, Monte Carlo simulation is conducted on the referendum dataset by regions, to research the properties of those statistical tests under a range of different scenarios. *add a bit summary of result*
+# Abstract
 
-\newpage
+More than 17 million people voted to leave the EU in 2016 Referendum in the UK. This statistical report investigated the difference of approval rates of Brexit in England and the rest of the UK by carrying out both parametric and non-parametric tests. Particularly, Monte Carlo simulation is conducted on the referendum dataset by regions, to research the properties of those statistical tests under a range of different scenarios. 
+
 # Motivation
 
 Hundreds of thousands of people marched to London's Parliament Square for a referendum on the final Brexit deal in late October[@BBCNews2018]. In the EU referendum in 2016, approximately 52%, or more than 17 million people in the UK, voted to leave the European Union [@Becker2017]. To investigate what voters in different nations of the UK vote for, the dataset of EU referendum results by regions[@ElectoralCommission2016] are statistically analysed and tested in this report. The dateset contains numerous variates regarding the referendum outcome, yet only *Region* and *Percent Leave* are concerned in terms of our research objectives.
@@ -73,7 +73,7 @@ summry <- brxData %>% group_by(Region) %>%
             sd = sd(brexitRate))
 
 kable(summry, caption = "Summary of Leave Vote Rates in Regions of England and Non-England",
-      booktabs = T, longtable = T)
+      digits = 2, booktabs = T, longtable = T)
 ```
 
 What is concerned in this research is whether the leave vote rates in England regions *higher* than in Non-England regions, which involves two groups of samples. Therefore, the statistical tests to be conducted should be one-tailed test for two groups. The chosen tests are
@@ -101,56 +101,64 @@ To investigate the *size* of two tests, the effect sizes are set to be 0, where 
 For each attributes stated above, 10 datasets of different sample sizes from 10 to 1000 are generated to be test.
 
 
-## Power and Size
+## Monte Carlo Simulation
 
-Two functions are created to complete the workflow. Function `simulating()` generates a dataset given conditions of scenario, e.g. sample size, mean and standard deviation of two groups of datasets. Function `MonteCarlo()` invokes `simulating()`, carry out specific test, store the $p$-value, by doing all these 1000 iterations it finally return the proportion of rejecting $H_0$. The number of iteration, parametric or non-parametric test to be conducted are also arbitrary and can be specified as inputs. Also, both functions have a *seed* argument for reproducibility purpose.
+Two functions are created to complete the workflow. Function `simulating()` generates a dataset given conditions of scenario, e.g. sample size, mean and standard deviation of two groups of datasets. Function `MonteCarlo()` invokes `simulating()`, carries out specific test and stores the $p$-value, by doing all these 1000 iterations it finally return the proportion of rejecting $H_0$. The number of iteration, parametric or non-parametric test to be conducted are also arbitrary and can be specified as inputs. Also, both functions have a *seed* argument for reproducibility purpose.
 
-A 10 by 5 *power* matrix is evaluated for T test and Mann-Whitney U Test respectively. 10 rows are for 10 different sample sizes, 5 columns are for different effect sizes. Similarly, two 10 by 8 *size* matrices are evaluated for two test, 8 columns are for 4 differences of standard deviation and round to 0 or not.
+A 10 by 5 *power* matrix is evaluated for t test and Mann-Whitney U test respectively. 10 rows are for 10 different sample sizes, 5 columns are for different effect sizes. Similarly, two 10 by 8 *size* matrices are evaluated for two tests, 8 columns are for 4 differences of standard deviation and round to 0 or not.
 
 # Result and Discussion
 
-The power of parametric and non-parametric tests, in terms of different sample sizes and effect sizes, are calculated based on 1000 simulated datasets, and the result are shown in two tables below.
+Each cell of the *power* matrix is calculated based on 1000 times of test, and the outcomes for are t test and Mann-Whitney U test are respectively shown in table 2 and table 3.
 
 
-
-```{r power-tables}
+```{r power-tables, results='asis'}
 
 header <- c(group1 = 1, group2 = 5)
-names(header) <- c("Sample Size", "Effect Size")
-kable(pwr, caption = "Power of Student's T Test", booktabs=T, longtable = T) %>% 
+names(header) <- c("Sample Size", "Effect Size (Unit: %)")
+t1 <- kable(pwr, caption = "Power of Student's T Test", booktabs=T, longtable = T, digits = 3) %>% 
   add_header_above(header = header, bold = T)
 
 
-names(header) <- c("Sample Size", "Effect Size")
-kable(pwrNonPar, caption = "Power of Mann-Whitney U Test", booktabs=T, longtable = T) %>% 
+names(header) <- c("Sample Size", "Effect Size (Unit: %)")
+t2 <- kable(pwrNonPar, caption = "Power of Mann-Whitney U Test", booktabs=T, longtable =T, digits=3) %>% 
   add_header_above(header = header, bold = T)
+
+cat(c("\\begin{table}[!htb]
+    \\begin{minipage}{.5\\linewidth}
+      \\centering",
+        t1,
+    "\\end{minipage}%
+    \\begin{minipage}{.5\\linewidth}
+      \\centering",
+        t2,
+    "\\end{minipage} 
+\\end{table}"
+)) 
 
 ```
 
 
+The result suggests that, for both parametric and non-parametric tests, small effect size like 1 results in low power, even 0 power. With sample size increasing, the power of test also increases. Under scenarios with small sample size, the power of test is positively related to the effect size. Even sample size is as small as 10, the power can be appreciably high when effect size reach 10 or greater.
+
+By plotting the power over sample size(fig. 2), it is clear to see that sample size is also positively related to power of tests. Besides, the plots indicate that there is no sensible power difference between parametric and non-parametric tests under same scenario. The sample sizes of two groups in the true dataset are respectively 327 and 55, and the mean difference of two samples are round 10. In this case, both t test and Mann-Whitney test have significant power estimates.
 
 ```{r power-plot, fig.cap="Power of Parametric and Non-parametric Tests under Different Scenarios"}
 include_graphics("../figure/power.pdf")
 ```
 
-**Explain the power here**
 
-**Explain the power here**
-
-**Explain the power here**
-
-**Explain the power here**
-
-**Explain the power here**
+Likewise, each cell of the *size* matrix is calculated based on 1000 times of test, and the outcomes for are t test and Mann-Whitney U test are respectively shown in table 4 and 5. 
+The *size* matrix suggest that, the larger the difference of standard deviation is, the higher the sizes of tests are, given identical sample size. When the difference is 0, the size is always zero. 
 
 ```{r size-tables}
 header <- c(group1 = 1, group2 = 4, group3 = 4)
-names(header) <- c("Sample Size","SD Difference","SD Difference(record round to 0)")
+names(header) <- c("Sample Size","SD Difference","SD Difference(rounded)")
 kable(siz, caption = "Size of Student's T Test", booktabs=T, longtable = T) %>% 
   add_header_above(header = header, bold = T)
 
 
-names(header) <- c("Sample Size","SD Difference","SD Difference(record round to 0)")
+names(header) <- c("Sample Size","SD Difference","SD Difference(rounded)")
 kable(sizNonPar, format = "latex",
       caption = "Size of Mann-Whitney U Test", booktabs=T, longtable = T) %>% 
   add_header_above(header = header, bold = T) %>% 
@@ -158,34 +166,20 @@ kable(sizNonPar, format = "latex",
 
 ```
 
-
+By visualizing the two verbose tables(see fig. 3), it is obvious that, in contrast to power, the size of test does not vary over sample size. The true difference of sample standard deviations is 1.5%, falling between 0% and 3%, resulting relatively low size for both tests.
+Also, there is no distinct effect of rounding percentage of vote rate to integer. However, the different scale of y-asix is one thing worth noticing, which indicates that the size of Mann-Whitney test is greater than t test in general.
 
 ```{r size-plot, fig.cap="Size of Parametric and Non-parametric Tests Under Different Scenarios"}
 include_graphics("../figure/size.pdf")
 ```
 
-
-**Explain the size here**
-
-**Explain the size here**
-
-**Explain the size here**
-
-**Explain the size here**
-
+In summary, effect size and variance have considerable impacts on power and size of tests, but there is not much can be done to the properties of population. Nevertheless, the result analysis does indicate that larger sample size leads to greater power of test, and parametric test shows better performance with smaller size under identical scenario.
 
 # Conclusion
 
-Here to draw conclusions! 
+Both t test and Mann-Whitney U test rejected the null hypothesis, and these tests has convincible power and size according to the result analysis of Monte Carlo simulation. We can statistically infer that the approval rates of Brexit were higher in England than rest of the UK in 2016 referendum.
 
-Here to draw conclusions! 
-
-Here to draw conclusions! 
-
-Here to draw conclusions! 
-
-Here to draw conclusions! 
-
+Generally, we can also conclude that it is prudent to enlarge the sample size to reach higher power of test and choose parametric test when we can assume the distribution of population.
 
 \newpage
 # Reference
