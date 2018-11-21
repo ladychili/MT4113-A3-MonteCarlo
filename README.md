@@ -3,8 +3,9 @@
 Dependency:
 
 - reshape2
-- viridis
+- tidyverse
 - ggpubr
+- snow
 
 
 - Cite packages in report!

@@ -1,6 +1,5 @@
 library(tidyverse)
-library(reshape2) # for plots
-library(viridis)  # for plots
+library(reshape2) 
 library(ggpubr)
 source("script/simulating.R")
 source("script/MonteCarlo.R")

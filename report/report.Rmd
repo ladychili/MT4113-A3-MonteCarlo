@@ -23,6 +23,8 @@ header-includes:
  \usepackage[bottom]{footmisc}
 bibliography: reference.bib
 csl: harvard.csl
+nocite: | 
+  @r, @snow, @tidyverse, @reshape2, @ggpubr
 ---
 
 ```{r setup, include=FALSE}
@@ -186,5 +188,4 @@ Generally, we can also conclude that it is prudent to enlarge the sample size to
 
 <div id="refs"></div>
 
-# Appendix
 
