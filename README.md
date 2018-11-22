@@ -18,7 +18,7 @@ The project is maintained on github. [Repository](https://github.com/ladychili/M
 
 ## About Master Script
 
-Dependency:
+**Dependency**:
 
 - `tidyverse`
 
@@ -31,12 +31,14 @@ Dependency:
 Master script conducts the whole workflow and produces all tables and plots shown in report, and it takes around 15 mins to run. The workspace produced by *master.r* is saved as *final.RData* under folder *data*.
 
 
-Two things need to be noticed
+**Two things need to be noticed**
 
 - Function `MonteCarlo()` use **three** cores by default to invoke `simulating()` in parallel. 
 
 - Sourcing the whole file *master.r* somehow does not save plots in local properly. Running related code(`pdf()`, `dev.off()`, etc.) line by line does.
 
+
+**master.R Workflow**
 
 ![](figure/MasterWorkflow.png)
 

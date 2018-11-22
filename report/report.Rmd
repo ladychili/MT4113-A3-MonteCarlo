@@ -195,4 +195,8 @@ Generally, we can also conclude that it is prudent to enlarge the sample size to
 
 <div id="refs"></div>
 
+# Appendix
 
+```{r, fig.cap="Scenario Design"}
+include_graphics("../figure/scenarios.png")
+```
