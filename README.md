@@ -38,6 +38,8 @@ Two things need to be noticed
 - Sourcing the whole file *master.r* somehow does not save plots in local properly. Running related code(`pdf()`, `dev.off()`, etc.) line by line does.
 
 
+![](figure/MasterWorkflow.png)
+
 ## Functions Documentation
 
 
@@ -66,6 +68,8 @@ Inputs:
 Output: 
 
   - a number between 0 and 1
+
+---
 
 `simulating()` 
 
