@@ -1,5 +1,8 @@
 # Documentation of A3 Submission
 
+![repo-size](https://img.shields.io/github/repo-size/ladychili/MT4113-A3-MonteCarlo.svg)
+![chat-gitter](https://img.shields.io/gitter/room/ladychili/MT4113-A3-MonteCarlo.svg?color=pink)
+
 The project is maintained on github. [Repository](https://github.com/ladychili/MT4113-A3-MonteCarlo) will be made public after due date. 
 
 ## Project Structure
